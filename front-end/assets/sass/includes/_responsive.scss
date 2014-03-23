@@ -1,0 +1,41 @@
+
+/* LESS THAN DESKTOP LARGE */
+@media only screen and (max-width: $dekstopLarge){
+}
+
+
+
+/* LESS THAN DESKTOP */
+@media only screen and (max-width: $desktop){
+    .main{
+        padding-left:15px;
+        padding-right:15px;
+    }
+}
+
+
+/* LESS THAN TABLET */
+@media only screen and (max-width: $tablet){
+
+    .row{
+         @for $i from 1 through $total-columns{
+            .grid-#{$i}{
+                @include span-columns($total-columns);
+                @include omega;
+           
+                &.end{
+                    @include omega;
+                }
+            }
+
+        }
+
+     }
+
+}
+
+
+/* LESS THAN MOBILE LANDSCAPE */
+@media only screen and (max-width: $mobile){
+   
+}

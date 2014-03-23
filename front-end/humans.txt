@@ -1,0 +1,21 @@
+/* TEAM */
+Front End: Gareth Fuller
+Design: Gareth Fuller
+Site: Gareth Awesome game
+Location: Cambridge England
+
+
+/* SITE */
+Standards: 
+- HTML5
+- CSS3
+
+Components: 
+- jQuery
+- Grunt
+- Compass
+- Susy
+- rgbapng
+- node
+- websokets
+- awesomeness
