@@ -12,9 +12,9 @@ module.exports = function(grunt) {
 						'assets/sass/includes/*.scss'];
 
   	var jsLocations= ['assets/js/script.js', 
-					'assets/js/app-functions.js', 
 					'assets/js/vendor/*.js',
-					'assets/js/core/*.js'];
+					'assets/js/app/*.js',
+					'assets/js/app/**/*.js'];
 
   	// start the config for grunt
 	grunt.initConfig({
