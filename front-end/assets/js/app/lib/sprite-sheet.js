@@ -1,52 +1,91 @@
 /* This is the class to handle our test spriting */
 
-core.SpriteSheet = function(src, frames, w, h, canvas){
+core.SpriteSheet = function(options){
+
 	
-	// we will exit if we do not have all required args to create a new sprite sheet
-	if( typeof src === 'undefined' || 
-		typeof frames === 'undefined' ||
-		typeof w === 'undefined' ||
-		typeof h === 'undefined' ||
-		typeof canvas === 'undefined'){
+	// These are the args we will neeed by default
+	if( typeof options.file === 'undefined' || 
+		typeof options.frames === 'undefined' ||
+		typeof options.width === 'undefined' ||
+		typeof options.height === 'undefined' ||
+		typeof options.canvas === 'undefined'){
+
+		core.debug('Call to sprite sheet with '+options.file+ ' failed, missing required options', 'FATAL');
+
 		return false;
 	}
 
-	// set up the new image for this instance of the sprite sheet
+	//  construct al the props of he class
 	this.img = new Image();
-	this.frames = frames;
-	this.src = src;
-	this.w = w;
-	this.h = h;
-	this.canvas = canvas;
-	this.ctx = null;
+	this.img.src = options.file;
+	this.frames = options.frames;
+	this.width = options.width;
+	this.height = options.height;
+	this.canvas = options.canvas;
+	this.speed = (typeof options.speed !== 'undefined') ? options.speed : 0; 
+	this.once =  (typeof options.once !== 'undefined') ? options.once : true
+	this.x = options.x;
+	this.y = options.y;
+	this.outputHeight = (typeof options.outputHeight !== 'undefined') ? options.outputHeight : options.height;
+	this.outputWidth = (typeof options.outputWidth !== 'undefined') ? options.outputWidth : options.width;
+	this.ctx = this.canvas.getContext('2d');
 	this.currentFrame = 0;
-
-	// after constructing class call the init
-	this.init();
+	this._index = 0;
+	this.done = false;
 }
 
 // polymorphism
 // core.SpriteSheet.prototype = Object.create(class.prototype);
 
-core.SpriteSheet.prototype.init = function(){
-	this.img.src = this.src;
-	this.ctx = this.canvas.getContext('2d');
+core.SpriteSheet.prototype.reset = function(){
+	this.done = false;
 }
 
-// as a note this system is designed to deal with sprite sheets that are looong ;)
-core.SpriteSheet.prototype.update = function(){
+// update function
+core.SpriteSheet.prototype.update = function(dt){
+
+	if(typeof dt === 'undefined'){return false;}
+
+	if(!this.done){
+		// update the index based on the delta and speed
+		console.log(dt);
+		this._index += Math.floor(this.speed * dt);
+		this.render();
+		console.log(this._index);
+	}
+}
+
+// render function
+core.SpriteSheet.prototype.render = function(){
+
+	// if we have something that will move move to the next frame (based on speed)
+	if(this.speed > 0){
+		var curIndex = Math.floor(this._index)
+		this.currentFrame = curIndex % this.frames;
+
+		// if we are done and we only want to run once we will set done flag to true and exit,
+		// in this case render will not be called
+		if(this.once && (curIndex >= this.frames)){
+			this.done = true;
+			return false;
+		}
+	}
 
 	// clear the rect
-	this.ctx.clearRect(0,0,this.w,this.h);
+	this.ctx.clearRect(	this.x,
+						this.y,
+						this.outputWidth,
+						this.outputHeight);
 
 	// draw the new image
-	this.ctx.drawImage(this.img, this.w * this.currentFrame, 0, this.w, this.h, 0, 0, this.w, this.h);
-    
-    // if at the end of the aniamtion sequence, reset it    
-    if (this.currentFrame == this.frames) {
-      this.currentFrame = 0;
-    } else {
-      this.currentFrame ++;
-    }
+	this.ctx.drawImage( this.img, 
+						this.width * this.currentFrame, 
+						0, 
+						this.width, 
+						this.height, 
+						this.x, 
+						this.y, 
+						this.outputWidth, 
+						this.outputHeight );
 
 }

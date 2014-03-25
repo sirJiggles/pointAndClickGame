@@ -6,32 +6,42 @@ var core = {
 	width		: 500,
 	height		: 500,
 	socket		: io.connect('http://localhost:3000'),
-	layerOne	: document.getElementById('layerOne'),
-	interval	: 1000 / 60,
+	canvas		: document.getElementById('layerOne'),
+	interval	: 1000 / 5,
     lastTime	: (new Date()).getTime(),
     currentTime	: 0,
     delta		: 0,
-    guybrush	: null,
+    guybrush 	: null,
 
 	// init function
 	init: function(){
 		// set things up before starting the game
 
 		// lets do some funky guybrush animation for now
-		this.guybrush = new core.SpriteSheet('assets/img/gb_walk.png', 6, 105, 150, core.layerOne);
+		var guybrushOptions = {
+			file			: 'assets/img/gb_walk.png',
+			frames			: 5,
+			width			: 104,
+			height			: 150,
+			speed			: 1,
+			canvas			: core.canvas,
+			outputWidth 	: 52,
+			outputHeight	: 72,
+			x				: 20,
+			y				: 50,
+			once			: false
+		};
 
-		// for now just run it on a loop
-		window.setInterval(function(){
-			core.guybrush.update();
-		}, 150);
+		core.guybrush = new core.SpriteSheet(guybrushOptions);
 
 		core.gameLoop();
 	},
 
 	// update function this is called each frame
-	update: function(){
+	update: function(dt){
 		
-		
+		// update guybrush
+		core.guybrush.update(dt);
 
 	},
 
@@ -39,7 +49,7 @@ var core = {
 	debug: function(msg, lvl){
 		console.log('================== DEBUG MSG ===============');
 		console.log(msg);
-		if(typeof lvl !== undefined){
+		if(typeof lvl !== 'undefined'){
 			console.log(' WARNING LVL: '+lvl);
 		}
 		console.log('================= END DEBUG ================');
@@ -54,7 +64,7 @@ var core = {
 		          window.webkitRequestAnimationFrame ||
 		          window.mozRequestAnimationFrame    ||
 		          function(callback){
-		            window.setTimeout(callback, 1000 / 60);
+		            window.setTimeout(callback, core.interval);
 		          };
 		})();
 
@@ -67,7 +77,7 @@ var core = {
     		if(core.delta > core.interval) {
 
 				// step the game
-				core.update();
+				core.update(core.delta);
 
     			// set the last time
 				core.lastTime = core.currentTime - (core.delta % core.interval);
