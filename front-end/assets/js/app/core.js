@@ -11,14 +11,14 @@ var core = {
     lastTime	: (new Date()).getTime(),
     currentTime	: 0,
     delta		: 0,
-    guybrush 	: null,
+    mozart 		: null,
 
 	// init function
 	init: function(){
 		// set things up before starting the game
 
 		// lets do some funky guybrush animation for now
-		var guybrushOptions = {
+		/*var spriteOptions = {
 			file			: 'assets/img/gb_walk.png',
 			frames			: 5,
 			width			: 104,
@@ -30,9 +30,23 @@ var core = {
 			x				: 20,
 			y				: 50,
 			once			: false
+		};*/
+
+		var spriteOptions = {
+			file			: 'assets/img/mozart.png',
+			frames			: 5,
+			width			: 290,
+			height			: 632,
+			speed			: 180,
+			canvas			: core.canvas,
+			outputWidth 	: 72,
+			outputHeight	: 158,
+			x				: 200,
+			y				: 200,
+			once			: false
 		};
 
-		core.guybrush = new core.SpriteSheet(guybrushOptions);
+		core.mozart = new core.SpriteSheet(spriteOptions);
 
 		core.gameLoop();
 	},
@@ -40,8 +54,8 @@ var core = {
 	// update function this is called each frame
 	update: function(dt){
 		
-		// update guybrush
-		core.guybrush.update(dt);
+		// update mozart
+		core.mozart.update(dt);
 
 	},
 
