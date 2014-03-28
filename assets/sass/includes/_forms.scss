@@ -1,0 +1,123 @@
+
+/* CSS validation overrides */
+:required {}
+
+:optional {}
+
+:valid {}
+
+:invalid {}
+
+:default {}
+
+:in-range {}
+
+:out-of-range {}
+
+form {
+    
+}
+
+
+form {
+    fieldset {
+        @include block-left;
+        width: 96%;
+    }
+    label,
+    input,
+    textarea,
+    select{
+        @include em-font(14);
+    }
+
+    label{
+        float: left;
+        line-height: 1.8em;
+        width:40%;
+        @include reset-box;
+    }
+
+    legend {
+        margin: 0 0 10px 0;
+        font-weight: 400;
+        float: left;
+        width: 96%;
+        padding: 10px 2% 10px 2%;
+        color: white;
+    }
+
+    input,
+    select {
+        width:59%;
+        padding:0;
+        margin:0 0 15px 0;
+    }
+
+    input[type='search'] {
+        width:100%;
+        -moz-appearance:none;
+        -webkit-appearance:none;
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box; 
+        box-sizing:content-box;
+        border:none;
+        @include border-radius(15px);
+        @include box-shadow(#222, 1px, 1px, 5px, false, inset); 
+    }
+
+    input[type='submit']{
+        border:none;
+        overflow:visible;
+        font-weight:400;
+        padding:20px;
+        margin:10px 0 0 0;
+        background-color: $color3;
+        float:left;
+        color:white;
+    }
+
+    input[type='submit']:hover,
+    input[type='submit']:active{
+        
+    }
+
+    input[type='checkbox']{
+        width:15px;
+    }
+}
+
+/* New input types */
+progress,
+meter {
+    width: 100%;
+    margin: 0 0 4% 0;
+    @include block-left;
+}
+
+textarea{
+    width:100%;
+    height:50px;
+}
+
+@media only screen and (max-width: $desktop){
+    form{
+
+        label{
+            width:100%;
+            padding: 0 0 2% 0;
+        }
+
+        input,
+        select{
+            width: 92%;
+            padding:4%;
+            margin: 0 0 2% 0;
+        }
+
+        input[type='checkbox']{
+            padding:0;
+        }
+
+    }
+}

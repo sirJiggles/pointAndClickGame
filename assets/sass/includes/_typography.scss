@@ -1,0 +1,148 @@
+/* Typography style sheet */
+@import "includes/_settings";
+@import "includes/_mixins";
+
+
+body {
+    /* base font size */
+    font-size:$base-font-size;
+    @include em-line-height($base-font);
+}
+
+
+/* ======== Headings ======= */
+
+h1,h2,h3,h4,h5,h6{
+   color:#333;;
+   @include block-left;
+   font-weight: 400;
+   width:100%;
+}
+
+h1 {
+    @include em-font(30);
+    line-height:1.2em;
+    font-weight: 400;
+    margin:15px 0 0 0;
+    padding-bottom:15px;
+    color:$textColor;
+}
+
+h2 {
+    @include em-font(23);
+    line-height:1.2em;
+    margin: 0 0 20px 0;
+}
+
+h3 {
+    @include em-font(20);
+    line-height:1.2em;
+    margin:0;
+}
+
+h4{
+    @include em-font(18);
+    line-height:1.2em;
+    margin:0 0 15px 0;
+}
+
+h5{
+    padding:0 0 10px 0;
+}
+
+
+
+/* ===== Global common elements ======= */
+
+p {
+  margin: 0 0 15px 0;
+  color:$textColor;
+}
+
+ul {
+    list-style-type: disc;
+    padding: 0 0 0 30px;
+    margin: 15px 0 30px 0;
+    @include block-left;
+
+    li{
+        position:relative;
+        padding:0 0 0 20px;
+        margin:0 0 20px 0;
+        color:$textColor;
+
+    }
+}
+
+em{
+    font-weight:700;
+}
+
+a{
+    outline:none;
+    border:none;
+    color:$color1;
+}
+
+dl{
+    margin:15px 0;
+    @include block-left;
+    width:100%;
+
+    dt,dd{
+        @include block-left;
+        color:$textColor;
+    }
+    dt{
+        width:50%;
+        font-weight: 700;
+        margin-bottom:10px;
+    }
+    dd{
+        width:50%;
+        margin-bottom:10px;
+    }
+}
+
+table{
+    margin:15px 0;
+    width:100%;
+
+    tr{
+        th,td{
+            padding:10px;
+            color:$textColor;
+        }
+
+        th{
+            font-weight: 700;
+            color:white;
+            background-color:$color1;
+        }
+
+        &:nth-child(even) td{
+        }
+    }
+}
+
+
+strong{
+    font-weight:700;
+}
+
+
+@media only screen and (max-width: $mobile){
+
+    dl{
+        dd,dt{
+            width:100%;
+            @include block-left;
+            margin:5px 0 0 0;
+        }
+
+        dd{
+            margin-bottom:15px;
+        }
+    }
+
+}
