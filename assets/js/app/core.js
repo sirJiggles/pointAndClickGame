@@ -44,9 +44,9 @@ var core = {
 				newY = evt.pageY;
 
 			// set the sprite to moving and set the target
-			core.state.sprites['mozart-hover'].moveTo(newX, newY);
+			core.state.sprites['mozart-hover'].target = new core.Vector2D(newX, newY);
+			core.state.sprites['mozart-hover'].moving = true;
 
-			console.log(core.state.sprites['mozart-hover'].target);
 		});
 
 		

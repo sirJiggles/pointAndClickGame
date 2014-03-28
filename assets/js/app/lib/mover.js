@@ -9,6 +9,8 @@ core.Mover = function(){
 
 	this.moving = false;
 	this.target = new core.Vector2D;
+	this.desired = new core.Vector2D;
+	this.steering = new core.Vector2D;
 
 }
 
@@ -19,26 +21,23 @@ core.Mover.prototype.applyForce = function(force){
 	this.acceleration.add(force);
 }
 
-/* Function to move to, this is called on anything we want to move somewhere */
-core.Mover.prototype.moveTo = function(x, y){
-
-	this.target.x = x;
-	this.target.y = y;
-
-	// clear the velocity (move at same speed constantly)
-	this.velocity.mult(0);
+/* Seek function to move toward something */
+core.Mover.prototype.seek = function(){
 
 	// get the desired location vector
-	var desired = new core.Vector2D;
-	desired.sub(this.target, this.location);
-	desired.normalize();
-	desired.mult(this.topSpeed);
+	this.desired.x = this.target.x;
+	this.desired.y = this.target.y;
 
-	var steering = new core.Vector2D;
-	steering.sub(desired, this.velocity);
-	this.applyForce(steering);
+	this.desired.sub(this.location);
+	this.desired.normalize();
+	this.desired.mult(this.topSpeed);
 
-	this.moving = true;
+	this.steering.x = this.desired.x;
+	this.steering.y = this.desired.y;
+	this.steering.sub(this.velocity);
+
+	this.applyForce(this.steering);
+
 }
 
 /* This function is usually called in some update and will only run if moving */
@@ -46,7 +45,7 @@ core.Mover.prototype.move = function(){
 
 	if (this.moving){
 
-		console.log(this.location.x);
+		this.seek();
 
 		// to keep track of what to clear (for sprite sheets);
 		if(typeof this.lastLocation !== 'undefined'){
