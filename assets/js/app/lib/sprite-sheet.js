@@ -35,9 +35,12 @@ core.SpriteSheet = function(options){
 	// call the constructor of the parent class (this gives us location etc)
 	core.Mover.call(this);
 
-	this.location.x = options.x;
-	this.location.y = options.y
-	this.lastLocation = new core.Vector2D(this.location.x, this.location.y)
+	this.location = new core.Vector2D(options.x, options.y);
+	this.lastLocation = new core.Vector2D(this.location);
+
+	this.flipped = false;
+
+	return this;
 
 }
 

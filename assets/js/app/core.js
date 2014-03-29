@@ -4,6 +4,7 @@ var core = {
 
 	// set all the properties of the core
 	canvas		: document.getElementById('layerOne'),
+	canvasTwo	: document.getElementById('layerTwo'),
 	interval	: 1000 / 60,
     lastTime	: (new Date()).getTime(),
     currentTime	: 0,
@@ -11,16 +12,30 @@ var core = {
     state 	 	: {
     	sprites: []
     },
+    currentChar	: null,
 
 	// init function
 	init: function(){
+
 		// set things up before starting the game
 		core.canvas.width = $(window).innerWidth();
 		core.canvas.height = $(window).innerWidth();
 
+		core.canvasTwo.width = $(window).innerWidth();
+		core.canvasTwo.height = $(window).innerWidth();
+
+		// draw a path on the sceen for the pug to follow
+		var path = new core.PathSeg({x:0,y:100}, {x:700,y:100}, 20);
+
+		// for now just draw it
+		var ctx = this.canvasTwo.getContext('2d');
+		ctx.moveTo(path.start.x, path.start.y);
+		ctx.lineTo(path.end.x, path.end.y);
+		ctx.stroke();
+
 		// set up the sprites
 
-		var mozartHoverOptions = {
+		var mozartOptions = {
 			file			: 'assets/img/mozart.png',
 			frames			: 5,
 			width			: 290,
@@ -30,11 +45,14 @@ var core = {
 			outputHeight	: 158,
 			x				: 200,
 			y				: 200,
-			once			: false
+			once			: false,
+			topSpeed		: 20
 		};
 
-		core.state.sprites['mozart-hover'] = new core.SpriteSheet(mozartHoverOptions);
-		core.state.sprites['mozart-hover'].start();
+		core.state.sprites['mozart'] = new core.SpriteSheet(mozartOptions).start();
+		core.currentChar = core.state.sprites['mozart'];
+
+		core.currentChar.followPath(path);
 
 		//set up the click listener
 		$(window).click(function(evt){
@@ -43,9 +61,9 @@ var core = {
 			var newX = evt.pageX,
 				newY = evt.pageY;
 
-			// set the sprite to moving and set the target
-			core.state.sprites['mozart-hover'].target = new core.Vector2D(newX, newY);
-			core.state.sprites['mozart-hover'].moving = true;
+			// set the current active char to have a new target and be moving toward it
+			core.currentChar.target = new core.Vector2D(newX, newY);
+			core.currentChar.moving = true;
 
 		});
 
@@ -56,7 +74,7 @@ var core = {
 	// update function this is called each frame
 	update: function(dt){
 
-		core.state.sprites['mozart-hover'].update(dt);
+		core.currentChar.update(dt);
 		
 		// update all the sprites 
 		/*$.each(core.state.sprites, function(index, sprite){

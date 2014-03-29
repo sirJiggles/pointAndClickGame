@@ -1,8 +1,15 @@
 /* Vector 2d class for common vector operations */
 
 core.Vector2D = function(x, y){
-	this.x = (typeof x !== 'undefined') ? x : 0;
-	this.y = (typeof y !== 'undefined') ? y : 0;;
+
+	// can also create a new vector from another co-ords
+	if(typeof x === 'object'){
+		this.x = x.x;
+		this.y = x.y;
+	}else{
+		this.x = (typeof x !== 'undefined') ? x : 0;
+		this.y = (typeof y !== 'undefined') ? y : 0;
+	}
 
 	return this;
 }
@@ -44,10 +51,16 @@ core.Vector2D.prototype.div = function(n){
 	return this;
 }
 
+// normalize vector
 core.Vector2D.prototype.normalize = function(){
 	// as an example 
 	var m = this.mag();
 	if(m != 0){
 		this.div(m);
 	}
+}
+
+// dot product (common use to find angle between two vectors)
+core.Vector2D.prototype.dot = function(v){
+	return ( (this.x * v.x) + (this.y * v.y));
 }
