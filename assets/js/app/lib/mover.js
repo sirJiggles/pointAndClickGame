@@ -29,8 +29,18 @@ core.Mover.prototype.seek = function(){
 	this.desired.y = this.target.y;
 
 	this.desired.sub(this.location);
-	this.desired.normalize();
-	this.desired.mult(this.topSpeed);
+
+	// work out how far we are from the target
+	var distance = this.desired.mag();
+
+	// ring around the target
+	if(distance < 500){
+		this.desired.mult(0.5);
+	}else{
+		// continue to move as fast as possible to target
+		this.desired.normalize();
+		this.desired.mult(this.topSpeed);
+	}
 
 	this.steering.x = this.desired.x;
 	this.steering.y = this.desired.y;
@@ -62,6 +72,7 @@ core.Mover.prototype.move = function(){
 		// if we are at the station
 		if(this.location.x == this.target.x && this.location.y == this.target.y){
 			this.moving = false;
+			alert('arived');
 		}
 	} // end if moving
 
