@@ -64,3 +64,12 @@ core.Vector2D.prototype.normalize = function(){
 core.Vector2D.prototype.dot = function(v){
 	return ( (this.x * v.x) + (this.y * v.y));
 }
+
+// distance from this to another vector
+core.Vector2D.prototype.dist = function(v){
+
+	return Math.sqrt(  
+				Math.pow((this.x - v.x), 2) + 
+				Math.pow((this.y - v.y), 2)
+			);
+}

@@ -12,6 +12,8 @@ core.Mover = function(){
 	this.desired = new core.Vector2D;
 	this.steering = new core.Vector2D;
 
+	this.debugDot = new core.DebugDot;
+
 }
 
 // apply force function (accleration gets added the force)
@@ -45,7 +47,6 @@ core.Mover.prototype.seek = function(){
 	this.steering.sub(this.velocity);
 
 	this.applyForce(this.steering);
-
 }
 
 /* This function is usually called in some update and will only run if moving */
@@ -53,6 +54,11 @@ core.Mover.prototype.move = function(){
 
 	if (this.moving){
 
+		if(this.path){
+			this.stickToPath();
+		}
+		
+		// move toward target (whatever it may be)
 		this.seek();
 
 		// to keep track of what to clear (for sprite sheets);
@@ -67,6 +73,7 @@ core.Mover.prototype.move = function(){
 		// send forces down the chain
 		this.velocity.add(this.acceleration);
 		this.location.add(this.velocity);
+
 		// clear acceleration
 		this.acceleration.mult(0);
 
@@ -79,36 +86,40 @@ core.Mover.prototype.move = function(){
 }
 
 // this is the function that keeps a target on a path segment
-core.Mover.prototype.followPath = function(path){
+core.Mover.prototype.stickToPath = function(){
+
+	this.debugDot.clear();
 
 	// create a vector based on the velocity (25 pixels long)
 	var predict = new core.Vector2D(this.velocity);
 	predict.normalize();
-	predict.mult(25);
+	predict.mult(50);
 
 	// create a vector 25 pixels in the future based on velocity and location
 	var predictedLocation = new core.Vector2D(this.location);
 	predictedLocation.add(predict);
 
+	this.debugDot.draw(this.location);
+
 	// the normal point is the point on the line perpendicular to the current location
-	var normalPoint = core.MathUtils.getNormalPoint(path, predictedLocation);
+	var normalPoint = core.maths.getNormalPoint(this.path, predictedLocation);
 
 	// work out how far we are away from the normal point
-	var distance = predictedLocation.dist(normalPoint);
+	var distance = normalPoint.dist(predictedLocation);
 
 	// if we are to far from the path seek our new target
-	if(distance > path.radius){
+	if(distance > this.path.radius){
 
 		// shift the normal point a little further down the path (so we can create a new target)
-		var dir = new core.Vector2D(path.start);
-		dir.sub(path.end);
+		var dir = new core.Vector2D(this.path.start);
+		dir.sub(this.path.end);
 		dir.normalize();
-		dir.mult(10);
+		dir.mult(20);
 
-		var newTarget = core.Vector2D(dir);
+		var newTarget = new core.Vector2D(dir);
 		newTarget.add(normalPoint);
 
-		this.moving = true;
-
+		// update the target if we stray
+		this.target = newTarget;
 	}
 }

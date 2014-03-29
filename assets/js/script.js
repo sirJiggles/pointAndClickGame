@@ -11,6 +11,7 @@
  * @depends app/lib/mover.js
  * @depends app/lib/sprite-sheet.js
  * @depends app/lib/path-seg.js
+ * @depends app/lib/debug-dot.js
  */
 
 // On ready

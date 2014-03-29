@@ -1,6 +1,7 @@
 /* handy math functions */
 core.MathUtils = function(){
 	
+	this.debugDot = new core.DebugDot({color:'blue'});
 }
 
 // Get the angle between two vectors */
@@ -18,20 +19,24 @@ core.MathUtils.prototype.angleBetween = function(v1, v2){
 // get the normal point between start and end of path for a position vector (scalar projection)
 core.MathUtils.prototype.getNormalPoint = function(path, predictedLoc){
 
+	
+
 	// vector from the start of the line to the predicted location
-	var startToVehicle = new core.Vector2D(path.start);
-	startToVehicle.sub(predictedLoc);
+	var a = new core.Vector2D(predictedLoc);
+	a.sub(path.start);
 
 	// vector from start to end of line segment
-	var startToEnd = new core.Vector2D(path.start);
-	startToEnd.sub(path.end);
+	var b = new core.Vector2D(path.end);
+	b.sub(path.start);
 
-	startToEnd.normalize();
+	b.normalize();
 	// A.B = ||A|| * 1 * cos(theta)
-	startToEnd.mult(startToVehicle.dot(startToEnd));
+	b.mult(a.dot(b));
+	
+	var normalPoint = new core.Vector2D(b);
+	normalPoint.add(path.start);
 
-	var normalPoint = new Vector2D(path.start);
-	normalPoint.add(startToEnd);
+	this.debugDot.draw(normalPoint);
 
 	return normalPoint;
 }

@@ -13,9 +13,13 @@ var core = {
     	sprites: []
     },
     currentChar	: null,
+    debugCanvas	: document.getElementById('debugLayer'),
 
 	// init function
 	init: function(){
+
+		// init the math utils
+		core.maths = new core.MathUtils();
 
 		// set things up before starting the game
 		core.canvas.width = $(window).innerWidth();
@@ -24,8 +28,11 @@ var core = {
 		core.canvasTwo.width = $(window).innerWidth();
 		core.canvasTwo.height = $(window).innerWidth();
 
+		core.debugCanvas.width = $(window).innerWidth();
+		core.debugCanvas.height = $(window).innerWidth();
+
 		// draw a path on the sceen for the pug to follow
-		var path = new core.PathSeg({x:0,y:100}, {x:700,y:100}, 20);
+		var path = new core.PathSeg({x:300,y:500}, {x:1000,y:500}, 50);
 
 		// for now just draw it
 		var ctx = this.canvasTwo.getContext('2d');
@@ -40,19 +47,18 @@ var core = {
 			frames			: 5,
 			width			: 290,
 			height			: 632,
-			speed			: 140,
+			speed			: 120,
 			outputWidth 	: 72,
 			outputHeight	: 158,
 			x				: 200,
 			y				: 200,
 			once			: false,
-			topSpeed		: 20
+			topSpeed		: 30,
+			path 			: path
 		};
 
 		core.state.sprites['mozart'] = new core.SpriteSheet(mozartOptions).start();
 		core.currentChar = core.state.sprites['mozart'];
-
-		core.currentChar.followPath(path);
 
 		//set up the click listener
 		$(window).click(function(evt){
@@ -76,13 +82,6 @@ var core = {
 
 		core.currentChar.update(dt);
 		
-		// update all the sprites 
-		/*$.each(core.state.sprites, function(index, sprite){
-			console.log(sprite);
-			sprite.update(dt);
-			//sprite.moveTo(500, 500);
-		});*/
-
 	},
 
 	// simple debuging helper

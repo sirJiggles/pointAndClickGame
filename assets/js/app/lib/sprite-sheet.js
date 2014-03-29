@@ -40,6 +40,9 @@ core.SpriteSheet = function(options){
 
 	this.flipped = false;
 
+	this.path = (typeof options.path !== 'undefined') ? options.path : null;
+
+
 	return this;
 
 }
@@ -74,8 +77,6 @@ core.SpriteSheet.prototype.update = function(dt){
 			this.timePassed = 0;
 		}
 	}
-
-	return this;
 }
 
 // render function
@@ -84,8 +85,8 @@ core.SpriteSheet.prototype.render = function(){
 	// clear the space that was last drawn
 	this.ctx.clearRect(	this.lastLocation.x,
 						this.lastLocation.y,
-						this.outputWidth,
-						this.outputHeight);
+						this.outputWidth * 4,
+						this.outputHeight * 4);
 
 	// draw the new image
 	this.ctx.drawImage( this.img, 
@@ -112,6 +113,4 @@ core.SpriteSheet.prototype.render = function(){
 
 	// run any mover code
 	this.move();
-
-	return this;
 }
