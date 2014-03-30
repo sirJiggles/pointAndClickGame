@@ -32,19 +32,32 @@ var core = {
 		core.debugCanvas.width = $(window).innerWidth();
 		core.debugCanvas.height = $(window).innerWidth();
 
-		// draw a path on the sceen for the pug to follow
-		var path = new core.PathSeg({x:300,y:100}, {x:1000,y:600}, 50);
+		// create some path segments for the fake lvl
+		var radius = 10;
+		var paths = [
+			new core.PathSeg({x:-10,y:400}, {x:200,y:400}, radius),
+			new core.PathSeg({x:200,y:400}, {x:400,y:200}, radius),
+			new core.PathSeg({x:400,y:200}, {x:600,y:200}, radius),
+			new core.PathSeg({x:600,y:200}, {x:800,y:0}, radius),
+			new core.PathSeg({x:600,y:200}, {x:800,y:400}, radius),
+			new core.PathSeg({x:200,y:400}, {x:400,y:600}, radius),
+			new core.PathSeg({x:400,y:600}, {x:600,y:600}, radius),
+			new core.PathSeg({x:600,y:600}, {x:800,y:800}, radius)
+		];
+		 
 
-		// for now just draw it
+		// draw the paths on the screen for debug mode
 		if(core.debugMode){
 			var ctx = this.canvasTwo.getContext('2d');
-			ctx.moveTo(path.start.x, path.start.y);
-			ctx.lineTo(path.end.x, path.end.y);
-			ctx.stroke();
+			for(var i = 0; i < paths.length; i ++){
+				ctx.moveTo(paths[i].start.x, paths[i].start.y);
+				ctx.lineTo(paths[i].end.x, paths[i].end.y);
+				ctx.stroke();
+			}
+			
 		}
 
-		// set up the sprites
-
+		// set up the mozart sprite
 		var mozartOptions = {
 			file			: 'assets/img/mozart.png',
 			frames			: 5,
@@ -53,11 +66,12 @@ var core = {
 			speed			: 120,
 			outputWidth 	: 72,
 			outputHeight	: 158,
-			x				: 200,
-			y				: 200,
+			x				: 0,
+			y				: 400,
 			once			: false,
 			topSpeed		: 30,
-			path 			: path
+			path 			: paths[0],
+			pathSegments 	: paths
 		};
 
 		core.state.sprites['mozart'] = new core.SpriteSheet(mozartOptions).start();
@@ -72,6 +86,7 @@ var core = {
 
 			// set the current active char to have a new target and be moving toward it
 			core.currentChar.target = new core.Vector2D(newX, newY);
+			core.currentChar.originalTarget = new core.Vector2D(newX, newY);
 			core.currentChar.moving = true;
 
 		});

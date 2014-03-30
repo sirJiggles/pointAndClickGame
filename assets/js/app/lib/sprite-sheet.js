@@ -40,8 +40,11 @@ core.SpriteSheet = function(options){
 
 	this.flipped = false;
 
+	// current path
 	this.path = (typeof options.path !== 'undefined') ? options.path : null;
 
+	// an array of all the path segments for the sprite to move on
+	this.pathSegments = (typeof options.pathSegments !== 'undefined') ? options.pathSegments : null;;
 
 	return this;
 

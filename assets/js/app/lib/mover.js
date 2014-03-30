@@ -9,6 +9,7 @@ core.Mover = function(){
 
 	this.moving = false;
 	this.target = new core.Vector2D;
+	this.originalTarget = new core.Vector2D;
 
 	this.debugDot = new core.DebugDot;
 	this.secondDebugDog = new core.DebugDot({'color':'yellow'});
@@ -36,13 +37,23 @@ core.Mover.prototype.seek = function(optionalTarget){
 	if(distance < 50){
 		// the speed depends on the distance from the target (give some easing)
 		desired.mult(0.5);
-	}else if(distance < 10){
-		// stop moving
-		this.moving = false;
 	}else{
 		// continue to move as fast as possible to target
 		desired.normalize();
 		desired.mult(this.topSpeed);
+	}
+
+
+	if(distance < 150 && this.path){
+			// if we are on the start or end of our current path
+			//if(this.location.x == this.path.start || this.location.x == this.path.end){
+		this.switchPathCheck();
+
+	}
+
+	if(distance < 10 && !this.path){
+		//stop moving we are as close as we want to get right now
+		this.moving = false;
 	}
 
 	var steering = new core.Vector2D(desired);
@@ -55,6 +66,10 @@ core.Mover.prototype.seek = function(optionalTarget){
 core.Mover.prototype.move = function(){
 
 	if (this.moving){
+
+		if(core.debugMode){
+			this.debugDot.clear();
+		}
 
 		if(this.path){
 			this.stickToPath();
@@ -86,8 +101,6 @@ core.Mover.prototype.move = function(){
 // this is the function that keeps a target on a path segment
 core.Mover.prototype.stickToPath = function(){
 
-	this.debugDot.clear();
-
 	// create a vector based on the velocity (50 pixels long)
 	var predict = new core.Vector2D(this.velocity);
 	predict.normalize();
@@ -99,7 +112,20 @@ core.Mover.prototype.stickToPath = function(){
 
 	if(core.debugMode){
 		this.debugDot.draw(this.target);
-		//this.secondDebugDog.draw(predictedLocation);
+		this.secondDebugDog.draw(predictedLocation);
+	}
+
+	// stop from running of the end of the path
+	if(this.flipped){
+		if(predictedLocation.x < this.path.start.x){
+			this.target = this.location;
+			return false;
+		}
+	}else{
+		if(predictedLocation.x > this.path.end.x){
+			this.target = this.location;
+			return false;
+		}
 	}
 
 	// the normal point is the point on the line perpendicular to the current location
@@ -111,25 +137,68 @@ core.Mover.prototype.stickToPath = function(){
 	// if we are to far from the path seek our new target
 	if(distance > this.path.radius){
 
-		// shift the normal point a little further down the path (so we can create a new target)
-		// also if we are moving left or right depeonds on the dir of the projected point
-		var dir = new core.Vector2D( (this.flipped) ? this.path.start : this.path.end);
-		dir.sub((this.flipped) ? this.path.end : this.path.start);
-		dir.normalize();
-		//how far down the ling to project
-		dir.mult(100);
+		// set our new target on the current pat segment
+		this.setTargetOnPath();
+	}
 
-		var newTarget = new core.Vector2D(dir);
-		newTarget.add(normalPoint);
+}
 
-		this.secondDebugDog.draw(newTarget);
+/* 	this function checks the direction we are heading and the original target to determin
+	if we should use the normal of the original target (on the line) or the start / end of the line
+	as the new target location */
+core.Mover.prototype.setTargetOnPath = function(){
+	// check if on last path segment (closest to target)
+	if(this.flipped){
+		if( this.path.start.x < this.originalTarget.x ){
+			// on the last segment
+			var targetNormal = core.maths.getNormalPoint(this.path, this.originalTarget);
+			this.target = targetNormal;
+		}else{
+			this.target = this.path.start;
+		}
+	}else{
+		if( this.path.end.x > this.originalTarget.x ){
+			var targetNormal = core.maths.getNormalPoint(this.path, this.originalTarget);
+			this.target = targetNormal;
+		}else{
+			this.target = this.path.end;
+		}
+	}
+}
 
-		// call the seek function to apply the force of this new target
-		this.seek(newTarget);
+/*	this is the function that will check if we can / should switch to another path segment and which
+	we should switch to (based on the original target) it will also put our */
+core.Mover.prototype.switchPathCheck = function(){
 
-		// the target must have been off the path, to rectify this get the normal of the target (from the path)
-		var targetNormal = core.maths.getNormalPoint(this.path, this.target);
-		this.target = targetNormal;
+
+	var foundPaths = [];
+
+	// check for path points in the area to find what paths are connected
+	for(var i = 0; i < this.pathSegments.length; i++){
+		// path checking point 
+		var pathCheckPoint = (this.flipped) ? this.pathSegments[i].end : this.pathSegments[i].start;
+		if( core.maths.aboutTheSame(this.location, pathCheckPoint, 100) ){
+			foundPaths.push(this.pathSegments[i]);
+		}
+	}
+
+	// set the closest to be the distance from the current location by default
+	var shortestDistance = this.location.dist(this.originalTarget);
+	var closest = null;
+
+	// now for each of the paths we are close to check if which one has the closest oposit side to the main target
+	for(var i = 0; i < foundPaths.length; i++){
+		var pathCheckPoint = (this.flipped) ? foundPaths[i].start : foundPaths[i].end;
+		var distanceToEnd = pathCheckPoint.dist(this.originalTarget);
+
+		if(distanceToEnd < shortestDistance){
+			closest = foundPaths[i];
+		}
+	}
+
+	// if we have a path that is closer
+	if(closest){
+		this.path = closest;
 	}
 
 }
