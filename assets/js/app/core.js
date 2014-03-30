@@ -61,8 +61,8 @@ var core = {
 		var mozartOptions = {
 			file			: 'assets/img/mozart.png',
 			frames			: 5,
-			width			: 290,
-			height			: 632,
+			width			: 136,
+			height			: 297,
 			speed			: 120,
 			outputWidth 	: 72,
 			outputHeight	: 158,

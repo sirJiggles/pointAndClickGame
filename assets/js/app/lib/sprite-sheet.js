@@ -91,9 +91,10 @@ core.SpriteSheet.prototype.render = function(){
 						this.outputWidth * 4,
 						this.outputHeight * 4);
 
+	var nextFrameLoc = (!this.flipped) ? this.width * this.currentFrame : (this.width * this.currentFrame) * 2
 	// draw the new image
 	this.ctx.drawImage( this.img, 
-						this.width * this.currentFrame, 
+						nextFrameLoc, 
 						0, 
 						this.width, 
 						this.height, 

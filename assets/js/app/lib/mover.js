@@ -43,12 +43,9 @@ core.Mover.prototype.seek = function(optionalTarget){
 		desired.mult(this.topSpeed);
 	}
 
-
+	// check if we need to look for a new path segment
 	if(distance < 150 && this.path){
-			// if we are on the start or end of our current path
-			//if(this.location.x == this.path.start || this.location.x == this.path.end){
 		this.switchPathCheck();
-
 	}
 
 	if(distance < 10 && !this.path){
@@ -169,7 +166,6 @@ core.Mover.prototype.setTargetOnPath = function(){
 /*	this is the function that will check if we can / should switch to another path segment and which
 	we should switch to (based on the original target) it will also put our */
 core.Mover.prototype.switchPathCheck = function(){
-
 
 	var foundPaths = [];
 
