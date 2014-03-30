@@ -12,6 +12,7 @@ var core = {
     state 	 	: {
     	sprites: []
     },
+    debugMode 	: true,
     currentChar	: null,
     debugCanvas	: document.getElementById('debugLayer'),
 
@@ -32,13 +33,15 @@ var core = {
 		core.debugCanvas.height = $(window).innerWidth();
 
 		// draw a path on the sceen for the pug to follow
-		var path = new core.PathSeg({x:300,y:500}, {x:1000,y:500}, 50);
+		var path = new core.PathSeg({x:300,y:100}, {x:1000,y:600}, 50);
 
 		// for now just draw it
-		var ctx = this.canvasTwo.getContext('2d');
-		ctx.moveTo(path.start.x, path.start.y);
-		ctx.lineTo(path.end.x, path.end.y);
-		ctx.stroke();
+		if(core.debugMode){
+			var ctx = this.canvasTwo.getContext('2d');
+			ctx.moveTo(path.start.x, path.start.y);
+			ctx.lineTo(path.end.x, path.end.y);
+			ctx.stroke();
+		}
 
 		// set up the sprites
 

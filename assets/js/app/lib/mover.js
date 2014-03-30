@@ -9,15 +9,9 @@ core.Mover = function(){
 
 	this.moving = false;
 	this.target = new core.Vector2D;
-	this.desired = new core.Vector2D;
-	this.steering = new core.Vector2D;
-
-	this.targetChange = false;
-	this.oldTarget = null;
-	//used to check if we are trying to head back to the same loc
-	this.oldNormal = new core.Vector2D;
 
 	this.debugDot = new core.DebugDot;
+	this.secondDebugDog = new core.DebugDot({'color':'yellow'});
 
 }
 
@@ -29,29 +23,32 @@ core.Mover.prototype.applyForce = function(force){
 }
 
 /* Seek function to move toward something */
-core.Mover.prototype.seek = function(){
+core.Mover.prototype.seek = function(optionalTarget){
 
 	// get the desired location vector
-	this.desired = new core.Vector2D(this.target);
-	this.desired.sub(this.location);
+	var desired = new core.Vector2D( (typeof optionalTarget !== 'undefined') ? optionalTarget : this.target);
+	desired.sub(this.location);
 
 	// work out how far we are from the target
-	var distance = this.desired.mag();
+	var distance = desired.mag();
 
 	// ring around the target
-	if(distance < 20){
+	if(distance < 50){
 		// the speed depends on the distance from the target (give some easing)
-		this.desired.mult(0.5);
+		desired.mult(0.5);
+	}else if(distance < 10){
+		// stop moving
+		this.moving = false;
 	}else{
 		// continue to move as fast as possible to target
-		this.desired.normalize();
-		this.desired.mult(this.topSpeed);
+		desired.normalize();
+		desired.mult(this.topSpeed);
 	}
 
-	this.steering = new core.Vector2D(this.desired);
-	this.steering.sub(this.velocity);
+	var steering = new core.Vector2D(desired);
+	steering.sub(this.velocity);
 
-	this.applyForce(this.steering);
+	this.applyForce(steering);
 }
 
 /* This function is usually called in some update and will only run if moving */
@@ -82,10 +79,6 @@ core.Mover.prototype.move = function(){
 		// clear acceleration
 		this.acceleration.mult(0);
 
-		// if we are at the station
-		if(this.location.x == this.target.x && this.location.y == this.target.y){
-			this.moving = false;
-		}
 	} // end if moving
 
 }
@@ -95,16 +88,19 @@ core.Mover.prototype.stickToPath = function(){
 
 	this.debugDot.clear();
 
-	// create a vector based on the velocity (25 pixels long)
+	// create a vector based on the velocity (50 pixels long)
 	var predict = new core.Vector2D(this.velocity);
 	predict.normalize();
-	predict.mult(50);
+	predict.mult(20);
 
 	// create a vector 25 pixels in the future based on velocity and location
 	var predictedLocation = new core.Vector2D(this.location);
 	predictedLocation.add(predict);
 
-	this.debugDot.draw(this.location);
+	if(core.debugMode){
+		this.debugDot.draw(this.target);
+		//this.secondDebugDog.draw(predictedLocation);
+	}
 
 	// the normal point is the point on the line perpendicular to the current location
 	var normalPoint = core.maths.getNormalPoint(this.path, predictedLocation);
@@ -115,36 +111,25 @@ core.Mover.prototype.stickToPath = function(){
 	// if we are to far from the path seek our new target
 	if(distance > this.path.radius){
 
-		// save the old target for later( the global move )
-		this.oldTarget = new core.Vector2D(this.target);
-		this.targetChange = true;
+		// shift the normal point a little further down the path (so we can create a new target)
+		// also if we are moving left or right depeonds on the dir of the projected point
+		var dir = new core.Vector2D( (this.flipped) ? this.path.start : this.path.end);
+		dir.sub((this.flipped) ? this.path.end : this.path.start);
+		dir.normalize();
+		//how far down the ling to project
+		dir.mult(100);
 
-		// if the new and the old normal are about the same stop moving
-		if(core.maths.aboutTheSame(this.oldNormal, normalPoint, 10)){
-			// gone as far as we can go
-			this.moving = false;
+		var newTarget = new core.Vector2D(dir);
+		newTarget.add(normalPoint);
 
-		}else{
-			this.oldNormal = normalPoint;
+		this.secondDebugDog.draw(newTarget);
 
-			// shift the normal point a little further down the path (so we can create a new target)
-			var dir = new core.Vector2D(this.path.start);
-			dir.sub(this.path.end);
-			dir.normalize();
-			dir.mult(20);
+		// call the seek function to apply the force of this new target
+		this.seek(newTarget);
 
-			var newTarget = new core.Vector2D(dir);
-			newTarget.add(normalPoint);
-
-			this.target = newTarget;
-		}
-
-	}else{
-
-		if(this.targetChange){
-			// go back to using old target (back on track)
-			this.target = new core.Vector2D(this.oldTarget);
-			this.targetChange = false;
-		}
+		// the target must have been off the path, to rectify this get the normal of the target (from the path)
+		var targetNormal = core.maths.getNormalPoint(this.path, this.target);
+		this.target = targetNormal;
 	}
+
 }

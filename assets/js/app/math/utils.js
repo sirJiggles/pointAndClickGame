@@ -34,7 +34,9 @@ core.MathUtils.prototype.getNormalPoint = function(path, predictedLoc){
 	var normalPoint = new core.Vector2D(b);
 	normalPoint.add(path.start);
 
-	this.debugDot.draw(normalPoint);
+	if(core.debugMode){
+		this.debugDot.draw(normalPoint);
+	}
 
 	return normalPoint;
 }
