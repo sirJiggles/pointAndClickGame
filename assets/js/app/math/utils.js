@@ -19,8 +19,6 @@ core.MathUtils.prototype.angleBetween = function(v1, v2){
 // get the normal point between start and end of path for a position vector (scalar projection)
 core.MathUtils.prototype.getNormalPoint = function(path, predictedLoc){
 
-	
-
 	// vector from the start of the line to the predicted location
 	var a = new core.Vector2D(predictedLoc);
 	a.sub(path.start);
@@ -39,4 +37,21 @@ core.MathUtils.prototype.getNormalPoint = function(path, predictedLoc){
 	this.debugDot.draw(normalPoint);
 
 	return normalPoint;
+}
+
+// function to check if vector values are about the same value :D
+core.MathUtils.prototype.aboutTheSame = function(va, vb, factor){
+
+	var testX = false,
+		testY = false;
+
+	if( Math.abs(va.x - vb.x) < factor){
+		testX = true;
+	}
+	if( Math.abs(va.y - vb.y) < factor){
+		testY = true;
+	}
+
+	var result = (testX && testY) ? true : false;
+	return result;
 }

@@ -12,6 +12,11 @@ core.Mover = function(){
 	this.desired = new core.Vector2D;
 	this.steering = new core.Vector2D;
 
+	this.targetChange = false;
+	this.oldTarget = null;
+	//used to check if we are trying to head back to the same loc
+	this.oldNormal = new core.Vector2D;
+
 	this.debugDot = new core.DebugDot;
 
 }
@@ -110,16 +115,36 @@ core.Mover.prototype.stickToPath = function(){
 	// if we are to far from the path seek our new target
 	if(distance > this.path.radius){
 
-		// shift the normal point a little further down the path (so we can create a new target)
-		var dir = new core.Vector2D(this.path.start);
-		dir.sub(this.path.end);
-		dir.normalize();
-		dir.mult(20);
+		// save the old target for later( the global move )
+		this.oldTarget = new core.Vector2D(this.target);
+		this.targetChange = true;
 
-		var newTarget = new core.Vector2D(dir);
-		newTarget.add(normalPoint);
+		// if the new and the old normal are about the same stop moving
+		if(core.maths.aboutTheSame(this.oldNormal, normalPoint, 10)){
+			// gone as far as we can go
+			this.moving = false;
 
-		// update the target if we stray
-		this.target = newTarget;
+		}else{
+			this.oldNormal = normalPoint;
+
+			// shift the normal point a little further down the path (so we can create a new target)
+			var dir = new core.Vector2D(this.path.start);
+			dir.sub(this.path.end);
+			dir.normalize();
+			dir.mult(20);
+
+			var newTarget = new core.Vector2D(dir);
+			newTarget.add(normalPoint);
+
+			this.target = newTarget;
+		}
+
+	}else{
+
+		if(this.targetChange){
+			// go back to using old target (back on track)
+			this.target = new core.Vector2D(this.oldTarget);
+			this.targetChange = false;
+		}
 	}
 }
