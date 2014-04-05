@@ -15,6 +15,7 @@ var core = {
     debugMode 	: true,
     currentChar	: null,
     debugCanvas	: document.getElementById('debugLayer'),
+    pathLength 	: 200,
 
 	// init function
 	init: function(){

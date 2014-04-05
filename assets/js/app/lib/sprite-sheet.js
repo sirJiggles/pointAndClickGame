@@ -44,7 +44,7 @@ core.SpriteSheet = function(options){
 	this.path = (typeof options.path !== 'undefined') ? options.path : null;
 
 	// an array of all the path segments for the sprite to move on
-	this.pathSegments = (typeof options.pathSegments !== 'undefined') ? options.pathSegments : null;;
+	this.pathSegments = (typeof options.pathSegments !== 'undefined') ? options.pathSegments : null;
 
 	return this;
 
@@ -88,10 +88,10 @@ core.SpriteSheet.prototype.render = function(){
 	// clear the space that was last drawn
 	this.ctx.clearRect(	this.lastLocation.x,
 						this.lastLocation.y,
-						this.outputWidth * 4,
-						this.outputHeight * 4);
+						this.outputWidth,
+						this.outputHeight);
 
-	var nextFrameLoc = (!this.flipped) ? this.width * this.currentFrame : (this.width * this.currentFrame) * 2
+	var nextFrameLoc = (!this.flipped) ? this.width * this.currentFrame : ((this.width * this.currentFrame) * 2);
 	// draw the new image
 	this.ctx.drawImage( this.img, 
 						nextFrameLoc, 

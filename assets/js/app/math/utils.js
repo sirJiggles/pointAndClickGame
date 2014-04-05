@@ -57,3 +57,10 @@ core.MathUtils.prototype.aboutTheSame = function(va, vb, factor){
 	var result = (testX && testY) ? true : false;
 	return result;
 }
+
+core.MathUtils.prototype.getMiddlePoint = function(va, vb){
+	var mid = new core.Vector2D();
+	mid.x = (va.x + vb.x) / 2;
+	mid.y = (va.y + vb.y) / 2;
+	return mid;
+}
