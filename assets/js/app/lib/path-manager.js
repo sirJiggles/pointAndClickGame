@@ -3,7 +3,6 @@
 core.PathManager = function(){
 	this.pathsToCheck = null;
 	this.onLastSegment = false;
-	this.checkingRoute = false;
 
 	this.secondDebugDot = new core.DebugDot({'color':'yellow'});
 	this.thirdDebugDot = new core.DebugDot({'color':'pink'});
@@ -30,23 +29,39 @@ core.PathManager.prototype.stickToPath = function(){
 		this.secondDebugDot.draw(predictedLocation);
 	}
 
-	// check if we are about to run of the end of the path, if we are do the path swich check
-	if( (predictedLocation.x < this.path.start.x) || (predictedLocation.x > this.path.end.x) ){
-		this.switchPathCheck();
-	}
-
-	// stop from running of the end of the path
-	/*if(this.flipped){
-		if(predictedLocation.x < this.path.start.x){
-			this.target = this.location;
-			return false;
-		}
+	// if a new location has been clicked run the switch path check
+	if(this.newTarget){
+		//this.switchPathCheck();
 	}else{
-		if(predictedLocation.x > this.path.end.x){
-			this.target = this.location;
-			return false;
+		if(this.flipped){
+			if( predictedLocation.x < this.path.start.x ){
+				var switchedPaths = this.switchPathCheck();
+				if(!switchedPaths){
+					this.target = this.path.start;
+				}
+			}
+		}else{
+			if(predictedLocation.x > this.path.end.x){
+				var switchedPaths = this.switchPathCheck();
+				if(!switchedPaths){
+					this.target = this.path.end;
+				}
+			}
 		}
-	}*/
+		// check if we are about to run of the end of the path, if we are do the path swich check
+		/*if( (predictedLocation.x < this.path.start.x) || (predictedLocation.x > this.path.end.x) ){
+			console.log('called');
+			var switchedPaths = this.switchPathCheck();
+			if(!switchedPaths){
+				// prevent leaving the end of the path
+				if( (predictedLocation.x < this.path.start.x) ) { 
+					this.target = this.path.start;
+				}else{
+					this.target = this.path.end;
+				}
+			}
+		}*/
+	}
 
 	// the normal point is the point on the line perpendicular to the current location
 	var normalPoint = core.maths.getNormalPoint(this.path, predictedLocation);
@@ -68,24 +83,12 @@ core.PathManager.prototype.stickToPath = function(){
 	as the new target location */
 core.PathManager.prototype.setTargetOnPath = function(){
 	// check if on last path segment (closest to target)
-	if(this.flipped){
-		if( this.path.start.x < this.originalTarget.x ){
-			// on the last segment
-			var targetNormal = core.maths.getNormalPoint(this.path, this.originalTarget);
-			this.target = targetNormal;
-			this.onLastSegment = true;
-		}else{
-			this.target = this.path.start;
-		}
+	if( (this.path.start.x < this.originalTarget.x) || (this.path.end.x > this.originalTarget.x) ){
+		var targetNormal = core.maths.getNormalPoint(this.path, this.originalTarget);
+		this.target = targetNormal;
+		this.onLastSegment = true;
 	}else{
-		if( this.path.end.x > this.originalTarget.x ){
-			// on last segment
-			var targetNormal = core.maths.getNormalPoint(this.path, this.originalTarget);
-			this.target = targetNormal;
-			this.onLastSegment = true;
-		}else{
-			this.target = this.path.end;
-		}
+		this.target = (this.flipped) ? this.path.start : this.path.end;
 	}
 }
 
@@ -93,15 +96,10 @@ core.PathManager.prototype.setTargetOnPath = function(){
 	we should switch to (based on the original target) it will also put our */
 core.PathManager.prototype.switchPathCheck = function(){
 
-	// prevent this being called while it is working out a path
-	this.checkingRoute = true;
-
 	// make a copy of the path segments, this is so we can deduct paths that we have already checked from the array
 	this.pathsToCheck = this.pathSegments.slice(0);
 
 	var foundPaths = this.getPathsCloseTo(this.path);
-
-	console.log(foundPaths);
 
 	// set the closest to be the distance from the current location by default
 	var shortestDistance = this.location.dist(this.originalTarget);
@@ -116,7 +114,7 @@ core.PathManager.prototype.switchPathCheck = function(){
 		if(core.debugMode){ this.thirdDebugDot.draw(pathMiddle); }
 
 		// do another depth check
-		/*var subFoundPaths = this.getPathsCloseTo(foundPaths[i]);
+		var subFoundPaths = this.getPathsCloseTo(foundPaths[i]);
 
 		for(var j = 0; j < subFoundPaths.length; j++){
 			var subPathMiddle = core.maths.getMiddlePoint(subFoundPaths[j].start, subFoundPaths[j].end);
@@ -138,32 +136,34 @@ core.PathManager.prototype.switchPathCheck = function(){
 
 				if(core.debugMode){ this.fithDebugDot.draw(subSubPathMiddle); }
 			}
-		}*/
+		}
 
 		if(directionShortestDistance < shortestDistance){
-			console.log(foundPaths[i]);
+			// set the new record
+			shortestDistance = directionShortestDistance;
 			closest = foundPaths[i];
 		}
 	}
 
 	// if we have a path that is closer
 	if(closest){
+		// have a new closest path, so switch the target
 		this.path = closest;
+		//this.target = (this.flipped) ? this.path.start : this.path.end;
+		return true;
+	}else{
+		// trying to run off the end of the path
+		return false;
 	}
-
-	this.checkingRoute = false;
-
 }
 
 // mThis function gets all path segments close to a point
 core.PathManager.prototype.getPathsCloseTo = function(path){
 
 	var found = [],
-		factor = 20;
+		factor = 100;
 
 	var i = this.pathsToCheck.length;
-
-	console.log(this.pathsToCheck);
 
 	while(i--){
 		// dont check the path we are on

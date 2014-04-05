@@ -1,1 +1,366 @@
-.icons-sprite{background:url('/assets/img/icons-s2dcd6d3b3a.png') no-repeat}.icons-2x-sprite{background:url('/assets/img/icons-2x-s15c5cd744d.png') no-repeat}html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}body{font-size:10px;line-height:1.5em}h1,h2,h3,h4,h5,h6{color:#333;display:block;float:left;font-weight:400;width:100%}h1{font-size:3em;line-height:1.2em;font-weight:400;margin:15px 0 0 0;padding-bottom:15px;color:#555}h2{font-size:2.3em;line-height:1.2em;margin:0 0 20px 0}h3{font-size:2em;line-height:1.2em;margin:0}h4{font-size:1.8em;line-height:1.2em;margin:0 0 15px 0}h5{padding:0 0 10px 0}p{margin:0 0 15px 0;color:#555}ul{list-style-type:disc;padding:0 0 0 30px;margin:15px 0 30px 0;display:block;float:left}ul li{position:relative;padding:0 0 0 20px;margin:0 0 20px 0;color:#555}em{font-weight:700}a{outline:none;border:none;color:#2cbd21}dl{margin:15px 0;display:block;float:left;width:100%}dl dt,dl dd{display:block;float:left;color:#555}dl dt{width:50%;font-weight:700;margin-bottom:10px}dl dd{width:50%;margin-bottom:10px}table{margin:15px 0;width:100%}table tr th,table tr td{padding:10px;color:#555}table tr th{font-weight:700;color:white;background-color:#2cbd21}strong{font-weight:700}@media only screen and (max-width: 600px){dl dd,dl dt{width:100%;display:block;float:left;margin:5px 0 0 0}dl dd{margin-bottom:15px}}form fieldset{display:block;float:left;width:96%}form label,form input,form textarea,form select{font-size:1.4em}form label{float:left;line-height:1.8em;width:40%;padding:0;margin:0}form legend{margin:0 0 10px 0;font-weight:400;float:left;width:96%;padding:10px 2% 10px 2%;color:white}form input,form select{width:59%;padding:0;margin:0 0 15px 0}form input[type='search']{width:100%;-moz-appearance:none;-webkit-appearance:none;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;border:none;-webkit-border-radius:15px;-moz-border-radius:15px;-ms-border-radius:15px;-o-border-radius:15px;border-radius:15px;-webkit-box-shadow:#222,1px,1px,5px,inset;-moz-box-shadow:#222,1px,1px,5px,inset;box-shadow:#222,1px,1px,5px,inset}form input[type='submit']{border:none;overflow:visible;font-weight:400;padding:20px;margin:10px 0 0 0;background-color:#000;float:left;color:white}form input[type='checkbox']{width:15px}progress,meter{width:100%;margin:0 0 4% 0;display:block;float:left}textarea{width:100%;height:50px}@media only screen and (max-width: 960px){form label{width:100%;padding:0 0 2% 0}form input,form select{width:92%;padding:4%;margin:0 0 2% 0}form input[type='checkbox']{padding:0}}.site-header h1{font-size:6.0em;line-height:1.0em;color:#010101;font-family:'Limelight', cursive;margin:0;padding:40px 0 40px 0;text-shadow:0px 0px 10px #000;text-align:center}#site-footer{display:block;float:left;padding:30px 0 200px 0;margin:60px 0 0 0;border-top:1px solid #999;color:#555;font-size:1.4em;line-height:2.1em;font-family:'Limelight', cursive;width:100%}@media only screen and (max-width: 600px){#site-footer{padding:20px 0 20px 0;margin:30px 0 0 0}}body,html{height:100%}body{font-size:10px;line-height:1.5em}#site-wrapper{height:100%;min-height:100%;height:auto;position:relative;overflow:hidden;background-color:#fff}*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;*behavior:url("http://game.dev/assets/js/vendor/border-box.htc");font-family:'Source Sans Pro', sans-serif;font-weight:400}.clear-both{clear:both;font-size:0px;line-height:0px;height:0px}@media only screen and (max-width: 960px){.main{padding-left:15px;padding-right:15px}}.home{width:100%;height:100%}.home canvas{position:absolute}
+.icons-sprite {
+  background: url('/assets/img/icons-s2dcd6d3b3a.png') no-repeat;
+}
+
+.icons-2x-sprite {
+  background: url('/assets/img/icons-2x-s15c5cd744d.png') no-repeat;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Typography style sheet */
+body {
+  /* base font size */
+  font-size: 10px;
+  line-height: 1.5em;
+}
+
+/* ======== Headings ======= */
+h1, h2, h3, h4, h5, h6 {
+  color: #333;
+  display: block;
+  float: left;
+  font-weight: 400;
+  width: 100%;
+}
+
+h1 {
+  font-size: 3em;
+  line-height: 1.2em;
+  font-weight: 400;
+  margin: 15px 0 0 0;
+  padding-bottom: 15px;
+  color: #555555;
+}
+
+h2 {
+  font-size: 2.3em;
+  line-height: 1.2em;
+  margin: 0 0 20px 0;
+}
+
+h3 {
+  font-size: 2em;
+  line-height: 1.2em;
+  margin: 0;
+}
+
+h4 {
+  font-size: 1.8em;
+  line-height: 1.2em;
+  margin: 0 0 15px 0;
+}
+
+h5 {
+  padding: 0 0 10px 0;
+}
+
+/* ===== Global common elements ======= */
+p {
+  margin: 0 0 15px 0;
+  color: #555555;
+}
+
+ul {
+  list-style-type: disc;
+  padding: 0 0 0 30px;
+  margin: 15px 0 30px 0;
+  display: block;
+  float: left;
+}
+ul li {
+  position: relative;
+  padding: 0 0 0 20px;
+  margin: 0 0 20px 0;
+  color: #555555;
+}
+
+em {
+  font-weight: 700;
+}
+
+a {
+  outline: none;
+  border: none;
+  color: #2cbd21;
+}
+
+dl {
+  margin: 15px 0;
+  display: block;
+  float: left;
+  width: 100%;
+}
+dl dt, dl dd {
+  display: block;
+  float: left;
+  color: #555555;
+}
+dl dt {
+  width: 50%;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+dl dd {
+  width: 50%;
+  margin-bottom: 10px;
+}
+
+table {
+  margin: 15px 0;
+  width: 100%;
+}
+table tr th, table tr td {
+  padding: 10px;
+  color: #555555;
+}
+table tr th {
+  font-weight: 700;
+  color: white;
+  background-color: #2cbd21;
+}
+
+strong {
+  font-weight: 700;
+}
+
+@media only screen and (max-width: 600px) {
+  dl dd, dl dt {
+    width: 100%;
+    display: block;
+    float: left;
+    margin: 5px 0 0 0;
+  }
+  dl dd {
+    margin-bottom: 15px;
+  }
+}
+/* CSS validation overrides */
+form fieldset {
+  display: block;
+  float: left;
+  width: 96%;
+}
+form label,
+form input,
+form textarea,
+form select {
+  font-size: 1.4em;
+}
+form label {
+  float: left;
+  line-height: 1.8em;
+  width: 40%;
+  padding: 0;
+  margin: 0;
+}
+form legend {
+  margin: 0 0 10px 0;
+  font-weight: 400;
+  float: left;
+  width: 96%;
+  padding: 10px 2% 10px 2%;
+  color: white;
+}
+form input,
+form select {
+  width: 59%;
+  padding: 0;
+  margin: 0 0 15px 0;
+}
+form input[type='search'] {
+  width: 100%;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  border: none;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  -ms-border-radius: 15px;
+  -o-border-radius: 15px;
+  border-radius: 15px;
+  -webkit-box-shadow: #222222, 1px, 1px, 5px, inset;
+  -moz-box-shadow: #222222, 1px, 1px, 5px, inset;
+  box-shadow: #222222, 1px, 1px, 5px, inset;
+}
+form input[type='submit'] {
+  border: none;
+  overflow: visible;
+  font-weight: 400;
+  padding: 20px;
+  margin: 10px 0 0 0;
+  background-color: black;
+  float: left;
+  color: white;
+}
+form input[type='checkbox'] {
+  width: 15px;
+}
+
+/* New input types */
+progress,
+meter {
+  width: 100%;
+  margin: 0 0 4% 0;
+  display: block;
+  float: left;
+}
+
+textarea {
+  width: 100%;
+  height: 50px;
+}
+
+@media only screen and (max-width: 960px) {
+  form label {
+    width: 100%;
+    padding: 0 0 2% 0;
+  }
+  form input,
+  form select {
+    width: 92%;
+    padding: 4%;
+    margin: 0 0 2% 0;
+  }
+  form input[type='checkbox'] {
+    padding: 0;
+  }
+}
+.site-header h1 {
+  font-size: 6.0em;
+  line-height: 1.0em;
+  color: #010101;
+  font-family: 'Limelight', cursive;
+  margin: 0;
+  padding: 40px 0 40px 0;
+  text-shadow: 0px 0px 10px #000;
+  text-align: center;
+}
+
+#site-footer {
+  display: block;
+  float: left;
+  padding: 30px 0 200px 0;
+  margin: 60px 0 0 0;
+  border-top: 1px solid #999999;
+  color: #555555;
+  font-size: 1.4em;
+  line-height: 2.1em;
+  font-family: 'Limelight', cursive;
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  #site-footer {
+    padding: 20px 0 20px 0;
+    margin: 30px 0 0 0;
+  }
+}
+/* ================ MAIN LAYOUT ELEMENTS ================ */
+body, html {
+  height: 100%;
+}
+
+body {
+  /* base font size */
+  font-size: 10px;
+  line-height: 1.5em;
+}
+
+#site-wrapper {
+  height: 100%;
+  min-height: 100%;
+  height: auto;
+  position: relative;
+  overflow: hidden;
+  background-color: white;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  *behavior: url("http://game.dev/assets/js/vendor/border-box.htc");
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+}
+
+.clear-both {
+  clear: both;
+  font-size: 0px;
+  line-height: 0px;
+  height: 0px;
+}
+
+/* LESS THAN DESKTOP LARGE */
+/* LESS THAN DESKTOP */
+@media only screen and (max-width: 960px) {
+  .main {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+/* LESS THAN TABLET */
+/* LESS THAN MOBILE LANDSCAPE */
+/* Styles for the index page on the game */
+.home {
+  width: 100%;
+  height: 100%;
+  background: url('/assets/img/sample-image.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.home canvas {
+  position: absolute;
+}

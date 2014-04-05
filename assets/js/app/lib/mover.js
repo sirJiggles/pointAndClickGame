@@ -10,6 +10,7 @@ core.Mover = function(){
 	this.moving = false;
 	this.target = new core.Vector2D;
 	this.originalTarget = new core.Vector2D;
+	this.newTarget = false;
 
 	this.debugDot = new core.DebugDot;
 
@@ -49,17 +50,11 @@ core.Mover.prototype.seek = function(optionalTarget){
 		desired.mult(this.topSpeed);
 	}
 
-	// check if we need to look for a new path segment (only do this check of not on last segment ad not checking for a route)
-	/*if(distance < (core.pathLength / 2) && this.path && !this.onLastSegment && !this.checkingRoute){
-		this.switchPathCheck();
-	}*/
-
 	// stop moving of less than 10 px away and not on path or on the last segment of a path
 	if(distance < 10 && (!this.path || this.onLastSegment) ){
 		//stop moving we are as close as we want to get right now
 		this.moving = false;
 		this.onLastSegment = false;
-		console.log('at the station');
 	}
 
 	var steering = new core.Vector2D(desired);
@@ -71,8 +66,9 @@ core.Mover.prototype.seek = function(optionalTarget){
 /* This function is usually called in some update and will only run if moving */
 core.Mover.prototype.move = function(){
 
+	
 	if (this.moving){
-
+		
 		if(core.debugMode){
 			this.debugDot.clear();
 		}
@@ -98,6 +94,8 @@ core.Mover.prototype.move = function(){
 
 		// clear acceleration
 		this.acceleration.mult(0);
+
+		this.newTarget = false;
 
 	} // end if moving
 

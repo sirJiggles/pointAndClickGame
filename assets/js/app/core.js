@@ -34,7 +34,7 @@ var core = {
 		core.debugCanvas.height = $(window).innerWidth();
 
 		// create some path segments for the fake lvl
-		var radius = 10;
+		var radius = 2;
 		var paths = [
 			new core.PathSeg({x:-10,y:400}, {x:200,y:400}, radius),
 			new core.PathSeg({x:200,y:400}, {x:400,y:200}, radius),
@@ -45,17 +45,15 @@ var core = {
 			new core.PathSeg({x:400,y:600}, {x:600,y:600}, radius),
 			new core.PathSeg({x:600,y:600}, {x:800,y:800}, radius)
 		];
-		 
 
-		// draw the paths on the screen for debug mode
-		if(core.debugMode){
-			var ctx = this.canvasTwo.getContext('2d');
+		if(this.debugMode){
+			// draw the paths on the screen for debug mode
+			var ctx = core.canvasTwo.getContext('2d');
 			for(var i = 0; i < paths.length; i ++){
 				ctx.moveTo(paths[i].start.x, paths[i].start.y);
 				ctx.lineTo(paths[i].end.x, paths[i].end.y);
 				ctx.stroke();
 			}
-			
 		}
 
 		// set up the mozart sprite
@@ -89,6 +87,7 @@ var core = {
 			core.currentChar.target = new core.Vector2D(newX, newY);
 			core.currentChar.originalTarget = new core.Vector2D(newX, newY);
 			core.currentChar.moving = true;
+			core.currentChar.newTarget = true;
 
 		});
 
