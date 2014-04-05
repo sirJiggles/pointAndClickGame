@@ -30,8 +30,13 @@ core.PathManager.prototype.stickToPath = function(){
 		this.secondDebugDot.draw(predictedLocation);
 	}
 
+	// check if we are about to run of the end of the path, if we are do the path swich check
+	if( (predictedLocation.x < this.path.start.x) || (predictedLocation.x > this.path.end.x) ){
+		this.switchPathCheck();
+	}
+
 	// stop from running of the end of the path
-	if(this.flipped){
+	/*if(this.flipped){
 		if(predictedLocation.x < this.path.start.x){
 			this.target = this.location;
 			return false;
@@ -41,7 +46,7 @@ core.PathManager.prototype.stickToPath = function(){
 			this.target = this.location;
 			return false;
 		}
-	}
+	}*/
 
 	// the normal point is the point on the line perpendicular to the current location
 	var normalPoint = core.maths.getNormalPoint(this.path, predictedLocation);
@@ -111,7 +116,7 @@ core.PathManager.prototype.switchPathCheck = function(){
 		if(core.debugMode){ this.thirdDebugDot.draw(pathMiddle); }
 
 		// do another depth check
-		var subFoundPaths = this.getPathsCloseTo(foundPaths[i]);
+		/*var subFoundPaths = this.getPathsCloseTo(foundPaths[i]);
 
 		for(var j = 0; j < subFoundPaths.length; j++){
 			var subPathMiddle = core.maths.getMiddlePoint(subFoundPaths[j].start, subFoundPaths[j].end);
@@ -133,10 +138,9 @@ core.PathManager.prototype.switchPathCheck = function(){
 
 				if(core.debugMode){ this.fithDebugDot.draw(subSubPathMiddle); }
 			}
-		}
+		}*/
 
 		if(directionShortestDistance < shortestDistance){
-			console.log('new path found to be closer at: ');
 			console.log(foundPaths[i]);
 			closest = foundPaths[i];
 		}
@@ -144,9 +148,7 @@ core.PathManager.prototype.switchPathCheck = function(){
 
 	// if we have a path that is closer
 	if(closest){
-		console.log('set the closest');
 		this.path = closest;
-		console.log(this.path);
 	}
 
 	this.checkingRoute = false;
@@ -157,7 +159,7 @@ core.PathManager.prototype.switchPathCheck = function(){
 core.PathManager.prototype.getPathsCloseTo = function(path){
 
 	var found = [],
-		factor = 100;
+		factor = 20;
 
 	var i = this.pathsToCheck.length;
 
@@ -167,15 +169,25 @@ core.PathManager.prototype.getPathsCloseTo = function(path){
 		// dont check the path we are on
 		if (this.pathsToCheck[i] !== this.path){ 
 
-			// check ifk the end of the this path is close to the end of any other path
-			if( core.maths.aboutTheSame(path.end, this.pathsToCheck[i].start, factor)){
+			var close = false;
+
+			// check for any connecting paths around this path 
+			if( core.maths.aboutTheSame(path.end, this.pathsToCheck[i].start, factor) ){
+				close = true;
+			}
+			if( core.maths.aboutTheSame(path.start, this.pathsToCheck[i].end, factor) ){
+				close = true;
+			}
+			if( core.maths.aboutTheSame(path.start, this.pathsToCheck[i].start, factor) ){
+				close = true;
+			}
+			if( core.maths.aboutTheSame(path.end, this.pathsToCheck[i].end, factor) ){
+				close = true;
+			}
+
+			if(close){
 				found.push(this.pathsToCheck[i]);
 				this.pathsToCheck.splice(i, 1);
-			}else{
-				if( core.maths.aboutTheSame(path.start, this.pathsToCheck[i].end, factor)){
-					found.push(this.pathsToCheck[i]);
-					this.pathsToCheck.splice(i, 1);
-				}
 			}
 			
 		}else{

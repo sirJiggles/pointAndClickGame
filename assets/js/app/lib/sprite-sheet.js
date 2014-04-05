@@ -38,7 +38,7 @@ core.SpriteSheet = function(options){
 	this.location = new core.Vector2D(options.x, options.y);
 	this.lastLocation = new core.Vector2D(this.location);
 
-	this.flipped = false;
+	this.flipped = true;
 
 	// current path
 	this.path = (typeof options.path !== 'undefined') ? options.path : null;
@@ -91,7 +91,7 @@ core.SpriteSheet.prototype.render = function(){
 						this.outputWidth,
 						this.outputHeight);
 
-	var nextFrameLoc = (!this.flipped) ? this.width * this.currentFrame : ((this.width * this.currentFrame) * 2);
+	var nextFrameLoc = (!this.flipped) ? this.width * this.currentFrame : (this.width * this.currentFrame) + (this.width * (this.frames + 1) );
 	// draw the new image
 	this.ctx.drawImage( this.img, 
 						nextFrameLoc, 

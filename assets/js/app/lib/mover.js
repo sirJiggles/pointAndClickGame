@@ -13,6 +13,7 @@ core.Mover = function(){
 
 	this.debugDot = new core.DebugDot;
 
+	// call the path manager constructor
 	core.PathManager.call(this);
 
 }
@@ -49,17 +50,16 @@ core.Mover.prototype.seek = function(optionalTarget){
 	}
 
 	// check if we need to look for a new path segment (only do this check of not on last segment ad not checking for a route)
-	if(distance < (core.pathLength / 2) && this.path && !this.onLastSegment && !this.checkingRoute){
+	/*if(distance < (core.pathLength / 2) && this.path && !this.onLastSegment && !this.checkingRoute){
 		this.switchPathCheck();
-	}
+	}*/
 
 	// stop moving of less than 10 px away and not on path or on the last segment of a path
-	if(distance < 50 && (!this.path || this.onLastSegment) ){
+	if(distance < 10 && (!this.path || this.onLastSegment) ){
 		//stop moving we are as close as we want to get right now
 		this.moving = false;
 		this.onLastSegment = false;
-
-		alert('STOP');
+		console.log('at the station');
 	}
 
 	var steering = new core.Vector2D(desired);
