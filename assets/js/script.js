@@ -9,6 +9,7 @@
  * @depends app/math/vector-2d.js
  * @depends app/math/utils.js
  * @depends app/lib/path-manager.js
+ * @depends app/lib/nav-mesh.js
  * @depends app/lib/mover.js
  * @depends app/lib/sprite-sheet.js
  * @depends app/lib/path-seg.js

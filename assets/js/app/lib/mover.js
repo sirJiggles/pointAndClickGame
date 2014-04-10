@@ -15,12 +15,21 @@ core.Mover = function(){
 	this.debugDot = new core.DebugDot;
 
 	// call the path manager constructor
-	core.PathManager.call(this);
+	if(this.path){
+		core.PathManager.call(this);
+	}
+	if(this.navmesh){
+		core.NavMesh.call(this);
+	}
+	
 
 }
 
 // inherits all the path manager functions
 core.Mover.prototype = Object.create(core.PathManager.prototype);
+// inherits all the nav mesh functions
+core.Mover.prototype = Object.create(core.NavMesh.prototype);
+
 core.Mover.prototype.constructor = core.Mover;
 
 // apply force function (accleration gets added the force)
@@ -66,37 +75,42 @@ core.Mover.prototype.seek = function(optionalTarget){
 /* This function is usually called in some update and will only run if moving */
 core.Mover.prototype.move = function(){
 
+	if (!this.moving){
+		return false;
+	}
 	
-	if (this.moving){
-		
-		if(core.debugMode){
-			this.debugDot.clear();
-		}
+	if(core.debugMode){
+		this.debugDot.clear();
+	}
 
-		if(this.path){
-			this.stickToPath();
-		}
-		
-		// move toward target (whatever it may be)
-		this.seek();
+	// run any path code
+	if(this.path){
+		this.stickToPath();
+	}
 
-		// to keep track of what to clear (for sprite sheets);
-		if(typeof this.lastLocation !== 'undefined'){
+	// run any nav mesh code
+	if(this.navmesh){
+		this.stayInMesh();
+	}
+	
+	// move toward target (whatever it may be)
+	this.seek();
 
-			// work out if moving left or right
-			this.flipped = (this.lastLocation.x > this.location.x) ? true : false;
-			this.lastLocation = new core.Vector2D(this.location);
-		}
+	// to keep track of what to clear (for sprite sheets);
+	if(typeof this.lastLocation !== 'undefined'){
 
-		// send forces down the chain
-		this.velocity.add(this.acceleration);
-		this.location.add(this.velocity);
+		// work out if moving left or right
+		this.flipped = (this.lastLocation.x > this.location.x) ? true : false;
+		this.lastLocation = new core.Vector2D(this.location);
+	}
 
-		// clear acceleration
-		this.acceleration.mult(0);
+	// send forces down the chain
+	this.velocity.add(this.acceleration);
+	this.location.add(this.velocity);
 
-		this.newTarget = false;
+	// clear acceleration
+	this.acceleration.mult(0);
 
-	} // end if moving
+	this.newTarget = false;
 
 }

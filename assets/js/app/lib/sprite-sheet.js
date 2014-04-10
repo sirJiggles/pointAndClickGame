@@ -32,19 +32,22 @@ core.SpriteSheet = function(options){
 	this.done = true;
 	this.topSpeed = (typeof options.topSpeed !== 'undefined') ? options.topSpeed : 10;
 
-	// call the constructor of the parent class (this gives us location etc)
-	core.Mover.call(this);
-
 	this.location = new core.Vector2D(options.x, options.y);
 	this.lastLocation = new core.Vector2D(this.location);
 
 	this.flipped = true;
 
-	// current path
+	// set any paths for the sprite
 	this.path = (typeof options.path !== 'undefined') ? options.path : null;
+
+	// set any nav meshes fr the sprite
+	this.navmesh = (typeof options.navmesh !== 'undefined') ? options.navmesh : null;
 
 	// an array of all the path segments for the sprite to move on
 	this.pathSegments = (typeof options.pathSegments !== 'undefined') ? options.pathSegments : null;
+
+	// call the constructor of the parent class (this gives us location etc)
+	core.Mover.call(this);
 
 	return this;
 
