@@ -2,7 +2,7 @@
 core.GraphManager = function(){
 	
 	// this is where we will store our path being processed
-	this.graphPath = null;
+	this.graphPath = [];
 }
 
 core.GraphManager.prototype.getRoute = function() {
@@ -13,11 +13,18 @@ core.GraphManager.prototype.getRoute = function() {
 		endX = Math.floor(this.target.x / core.graphMagnifier),
 		endY = Math.floor(this.target.y / core.graphMagnifier);
 
+	// sanity check a condition that will only happen if you click of the grid
+	if (typeof this.graph.nodes[startY] === 'undefined' || typeof this.graph.nodes[endY] === 'undefined'){
+		return false;
+	}
+	if (typeof this.graph.nodes[startY][startY] === 'undefined' || typeof this.graph.nodes[endY][endX] === 'undefined'){
+		return false;
+	}
+
 	var start = this.graph.nodes[startY][startX],
 		end = this.graph.nodes[endY][endX];
-
 	// using the super cool a star work out the current path
-	this.graphPath = astar.search(this.graph.nodes, start, end);
+	this.graphPath = astar.search(this.graph.nodes, start, end);	
 };
 
 core.GraphManager.prototype.updateGraph = function(){
@@ -28,6 +35,10 @@ core.GraphManager.prototype.updateGraph = function(){
 
 		if(this.graphPath.length > 0){
 			this.setNextTarget();
+		}else{
+			// prevent the move and reset
+			this.moving = false;
+			this.target = this.lastLocation;
 		}
 	}
 
