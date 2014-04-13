@@ -14,21 +14,14 @@ core.Mover = function(){
 
 	this.debugDot = new core.DebugDot;
 
-	// call the path manager constructor
-	if(this.path){
-		core.PathManager.call(this);
+	if(this.graph){
+		core.GraphManager.call(this);
 	}
-	if(this.navmesh){
-		core.NavMesh.call(this);
-	}
-	
 
 }
 
-// inherits all the path manager functions
-core.Mover.prototype = Object.create(core.PathManager.prototype);
-// inherits all the nav mesh functions
-core.Mover.prototype = Object.create(core.NavMesh.prototype);
+// inherit all the graph manager functions
+core.Mover.prototype = Object.create(core.GraphManager.prototype);
 
 core.Mover.prototype.constructor = core.Mover;
 
@@ -59,11 +52,8 @@ core.Mover.prototype.seek = function(optionalTarget){
 		desired.mult(this.topSpeed);
 	}
 
-	// stop moving of less than 10 px away and not on path or on the last segment of a path
-	if(distance < 10 && (!this.path || this.onLastSegment) ){
-		//stop moving we are as close as we want to get right now
-		this.moving = false;
-		this.onLastSegment = false;
+	if(distance < (core.graphMagnifier / 2) && this.graph){
+		this.processTarget();
 	}
 
 	var steering = new core.Vector2D(desired);
@@ -83,14 +73,8 @@ core.Mover.prototype.move = function(){
 		this.debugDot.clear();
 	}
 
-	// run any path code
-	if(this.path){
-		this.stickToPath();
-	}
-
-	// run any nav mesh code
-	if(this.navmesh){
-		this.stayInMesh();
+	if(this.graph){
+		this.updateGraph();
 	}
 	
 	// move toward target (whatever it may be)

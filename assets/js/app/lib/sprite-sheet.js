@@ -34,17 +34,12 @@ core.SpriteSheet = function(options){
 
 	this.location = new core.Vector2D(options.x, options.y);
 	this.lastLocation = new core.Vector2D(this.location);
+	this.lastRenderLocation = new core.Vector2D(this.location);
 
 	this.flipped = true;
 
-	// set any paths for the sprite
-	this.path = (typeof options.path !== 'undefined') ? options.path : null;
-
-	// set any nav meshes fr the sprite
-	this.navmesh = (typeof options.navmesh !== 'undefined') ? options.navmesh : null;
-
-	// an array of all the path segments for the sprite to move on
-	this.pathSegments = (typeof options.pathSegments !== 'undefined') ? options.pathSegments : null;
+	// a graph to work out the path logic for the sprite (if it needs it)
+	this.graph = (typeof options.graph !== 'undefined') ? options.graph : null;
 
 	// call the constructor of the parent class (this gives us location etc)
 	core.Mover.call(this);
@@ -88,11 +83,14 @@ core.SpriteSheet.prototype.update = function(dt){
 // render function
 core.SpriteSheet.prototype.render = function(){
 
+	this.lastRenderLocation = new core.Vector2D(this.location);
+
+
 	// clear the space that was last drawn
-	this.ctx.clearRect(	this.lastLocation.x,
-						this.lastLocation.y,
-						this.outputWidth,
-						this.outputHeight);
+	this.ctx.clearRect(	this.lastRenderLocation.x - this.outputWidth,
+						this.lastRenderLocation.y - this.outputHeight,
+						this.outputWidth * 2,
+						this.outputHeight * 2);
 
 	var nextFrameLoc = (!this.flipped) ? this.width * this.currentFrame : (this.width * this.currentFrame) + (this.width * (this.frames + 1) );
 	// draw the new image
@@ -101,8 +99,8 @@ core.SpriteSheet.prototype.render = function(){
 						0, 
 						this.width, 
 						this.height, 
-						this.location.x, 
-						this.location.y, 
+						this.location.x - (this.outputWidth / 2), 
+						this.location.y - (this.outputHeight / 2), 
 						this.outputWidth, 
 						this.outputHeight );
 

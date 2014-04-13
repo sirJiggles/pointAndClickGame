@@ -15,7 +15,8 @@ var core = {
     },
     debugMode 	: true,
     currentChar	: null,
-    pathLength 	: 200,
+    graph 		: null,
+    graphMagnifier : 200,
 
 	// init function
 	init: function(){
@@ -33,54 +34,26 @@ var core = {
 		core.debugCanvas.width = width;
 		core.debugCanvas.height = height;
 
-		// create some path segments for the fake lvl
-		/*
-		var radius = 2;
-		var paths = [
-			new core.PathSeg({x:-10,y:400}, {x:200,y:400}, radius),
-			new core.PathSeg({x:200,y:400}, {x:400,y:200}, radius),
-			new core.PathSeg({x:400,y:200}, {x:600,y:200}, radius),
-			new core.PathSeg({x:600,y:200}, {x:800,y:0}, radius),
-			new core.PathSeg({x:600,y:200}, {x:800,y:400}, radius),
-			new core.PathSeg({x:200,y:400}, {x:400,y:600}, radius),
-			new core.PathSeg({x:400,y:600}, {x:600,y:600}, radius),
-			new core.PathSeg({x:600,y:600}, {x:800,y:800}, radius)
-		];*/
+		// set up the graph for the level, this is magnified by say 100 for now
+		core.graph = new Graph([
+			[1,1,1,1],
+			[0,1,1,0],
+			[0,0,1,1]
+		]);
 
-		// define a sample nav mesh (walkable area)
-		var navmesh = [
-			{x:0, y:400},
-			{x:200, y:400},
-			{x:200, y:600},
-			{x:400, y:600},
-			{x:400, y:400},
-			{x:600, y:400},
-			{x:600, y:200},
-			{x:200, y:200},
-			{x:200, y:300},
-			{x:0, y:400}
-		];
+		if(core.debugMode){
 
-		if(this.debugMode){
-			// draw the paths on the screen for debug mode
+			// show the graph
 			var ctx = core.canvasTwo.getContext('2d');
-			if(typeof paths !== 'undefined'){
-				for(var i = 0; i < paths.length; i ++){
-					ctx.moveTo(paths[i].start.x, paths[i].start.y);
-					ctx.lineTo(paths[i].end.x, paths[i].end.y);
-					ctx.stroke();
+
+			for(var i = 0; i < core.graph.input.length; i++){
+				for(var j = 0; j < core.graph.input[i].length; j++){
+					ctx.beginPath();
+					ctx.fillStyle = (core.graph.input[i][j] == 1) ? 'blue' : 'red';
+					ctx.rect( (j * core.graphMagnifier),(i * core.graphMagnifier),core.graphMagnifier,core.graphMagnifier);
+					ctx.fill();
 				}
-			}
-			if(typeof navmesh !== 'undefined'){
-				ctx.fillStyle = 'blue';
-				ctx.beginPath();
-				ctx.moveTo(navmesh[0].x, navmesh[0].y);
-				for(var i = 1; i < navmesh.length; i ++){
-					ctx.lineTo(navmesh[i].x, navmesh[i].y);
-				}
-				ctx.closePath();
-				ctx.fill();
-			}
+			}	
 		}
 
 		// set up the mozart sprite
@@ -96,7 +69,7 @@ var core = {
 			y				: 400,
 			once			: false,
 			topSpeed		: 30,
-			navmesh			: navmesh
+			graph 			: core.graph
 		};
 
 		core.state.sprites['mozart'] = new core.SpriteSheet(mozartOptions).start();
