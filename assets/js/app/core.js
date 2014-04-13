@@ -36,9 +36,10 @@ var core = {
 
 		// set up the graph for the level, this is magnified by say 100 for now
 		core.graph = new Graph([
-			[1,1,1,1],
-			[0,1,1,0],
-			[0,0,1,1]
+			[1,1,1,0,1],
+			[0,1,1,0,1],
+			[0,0,1,1,1],
+			[1,1,1,0,0]
 		]);
 
 		if(core.debugMode){

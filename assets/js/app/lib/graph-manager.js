@@ -61,13 +61,13 @@ core.GraphManager.prototype.setNextTarget = function(){
 core.GraphManager.prototype.processTarget = function(){
 
 	// handle if reached target
-	if( core.maths.aboutTheSame( this.location, this.originalTarget, core.graphMagnifier / 4) ){
+	if( core.maths.aboutTheSame( this.location, this.originalTarget, core.graphMagnifier / 2) ){
 		this.moving = false;
 		return false;
 	}
 
 	// handle setting of new target
-	if( core.maths.aboutTheSame( this.location, this.target, core.graphMagnifier / 4 ) ){
+	if( core.maths.aboutTheSame( this.location, this.target, core.graphMagnifier / 2 ) ){
 		this.graphPath.splice(0, 1);
 		this.setNextTarget();
 	}
