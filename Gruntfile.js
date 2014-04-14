@@ -14,7 +14,8 @@ module.exports = function(grunt) {
   	var jsLocations= ['assets/js/script.js', 
 					'assets/js/vendor/*.js',
 					'assets/js/app/*.js',
-					'assets/js/app/**/*.js'];
+					'assets/js/app/**/*.js',
+					'assets/js/ui.js'];
 
   	// start the config for grunt
 	grunt.initConfig({

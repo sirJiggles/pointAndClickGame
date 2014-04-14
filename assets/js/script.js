@@ -13,6 +13,7 @@
  * @depends app/lib/mover.js
  * @depends app/lib/sprite-sheet.js
  * @depends app/lib/debug-dot.js
+ * @depends ui.js
  */
 
 // On ready

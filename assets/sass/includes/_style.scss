@@ -32,3 +32,16 @@ body {
     line-height:0px;
     height:0px;
 }
+
+// Grid
+@for $i from 1 through $cols {
+    $new-width: ($col-width * $i ) + ($gutter-width * ($i - 1));
+    .grid-#{$i} {
+        width: $new-width;
+        margin: 0 $gutter-width 0 0;
+    }
+}
+
+.end {
+    margin: 0;
+}
