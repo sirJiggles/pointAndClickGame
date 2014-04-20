@@ -4,11 +4,10 @@
 .inventory{
     position:absolute;
     bottom:-70px;
-    left:0px;
     display:block;
     width:100%;
     @include transition(bottom 0.2s linear);
-
+    
     &.open{
         bottom:0px;
     }

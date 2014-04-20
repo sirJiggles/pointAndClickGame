@@ -32,6 +32,9 @@ core.SpriteSheet = function(options){
 	this.done = true;
 	this.topSpeed = (typeof options.topSpeed !== 'undefined') ? options.topSpeed : 10;
 
+	// we will just scale by width to maintain aspect ratio
+	this.scaleFactor = core.graphWidthMagnifier / 20;
+
 	this.location = new core.Vector2D(options.x, options.y);
 	this.lastLocation = new core.Vector2D(this.location);
 	this.lastRenderLocation = new core.Vector2D(this.location);
@@ -85,12 +88,14 @@ core.SpriteSheet.prototype.render = function(){
 
 	this.lastRenderLocation = new core.Vector2D(this.location);
 
+	this.resizedWidth = this.outputWidth * Math.floor(core.width / 100) / 7;
+	this.resizedHeight = this.outputHeight * Math.floor(core.width / 100) / 7;
 
 	// clear the space that was last drawn
-	this.ctx.clearRect(	this.lastRenderLocation.x - this.outputWidth,
-						this.lastRenderLocation.y - this.outputHeight,
-						this.outputWidth * 2,
-						this.outputHeight * 2);
+	this.ctx.clearRect(	this.lastRenderLocation.x - this.resizedWidth,
+						this.lastRenderLocation.y - this.resizedHeight,
+						this.resizedWidth * 2,
+						this.resizedHeight * 2);
 
 	var nextFrameLoc = (!this.flipped) ? this.width * this.currentFrame : (this.width * this.currentFrame) + (this.width * (this.frames + 1) );
 	// draw the new image
@@ -99,16 +104,16 @@ core.SpriteSheet.prototype.render = function(){
 						0, 
 						this.width, 
 						this.height, 
-						this.location.x - (this.outputWidth / 2), 
-						this.location.y - (this.outputHeight / 2), 
-						this.outputWidth, 
-						this.outputHeight );
+						this.location.x - (this.resizedWidth / 2), 
+						this.location.y - (this.resizedHeight / 2), 
+						this.resizedWidth, 
+						this.resizedHeight);
 
 	// update the current frame
 	if(this.currentFrame < this.frames){
 		this.currentFrame ++;
 	}else{
-		// we have completed a full animation sequence
+		// we have completed a full animation sequence 
 		this.currentFrame = 0;
 		if(this.once){
 			this.done = true;

@@ -20,8 +20,8 @@ var core = {
     graphWidthMagnifier : null,
     graphHeightMagnifier: null,
     graphSize : 10,
-    width : $(window).innerWidth(),
-    height: $(window).innerHeight(),
+    width : $('#game-inner').innerWidth(),
+    height: $('#game-inner').innerHeight(),
 
 	// init function
 	init: function(){
@@ -80,12 +80,12 @@ var core = {
 		core.currentChar = core.state.sprites['mozart'];
 
 		//set up the click listener
-		$(window).click(function(evt){
+		$('#canvas-wrapper').click(function(evt){
 
 			// get the location of the click
-			var newX = evt.pageX,
-				newY = evt.pageY;
-
+			var offset = $(this).offset(); 
+			var newX = evt.pageX - offset.left,
+				newY = evt.pageY - offset.top;
 			// set the current active char to have a new target and be moving toward it
 			core.currentChar.target = new core.Vector2D(newX, newY);
 			core.currentChar.originalTarget = new core.Vector2D(newX, newY);
@@ -151,8 +151,8 @@ var core = {
 
 	// handle any window resize here
 	resizeWindowCallback: function(){
-		core.width =  $(window).innerWidth();
-		core.height = $(window).innerHeight();
+		core.width =  $('#game-inner').innerWidth();
+		core.height = $('#game-inner').innerHeight();
 		core.graphWidthMagnifier = core.width / core.graphSize;
 		core.graphHeightMagnifier = core.height / core.graphSize;
 		// resize all of the canvases on the screen to be the same as the window or 'core'

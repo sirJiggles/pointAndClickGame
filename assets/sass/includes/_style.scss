@@ -17,7 +17,21 @@ body {
     height:100%;
     position:relative;
     overflow: hidden;
+
+    #game-inner{
+        position: relative;
+        max-width: 1024px;
+        min-width: 320px;
+        margin: 0 auto;
+        height:100%;
+    }
+
+    #canvas-wrapper{
+        width:100%;
+        height:100%;
+    }
 }
+
 
 *{
     @include border-box('#{$siteUrl}/assets/js/vendor/border-box.htc');
