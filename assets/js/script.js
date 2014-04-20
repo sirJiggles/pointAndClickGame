@@ -25,5 +25,5 @@ $(window).ready(function () {
 // On resize
 $(window).resize(function(){
     clearTimeout(core.resizeTimer);
-    core.resizeTimer = setTimeout(core.resizeWindowCallback, 500);
+    core.resizeTimer = setTimeout(core.resizeWindowCallback, 20);
 });

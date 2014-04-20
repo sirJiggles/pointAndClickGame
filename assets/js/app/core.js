@@ -76,8 +76,9 @@ var core = {
 			graph 			: core.graph
 		};
 
-		core.state.sprites['mozart'] = new core.SpriteSheet(mozartOptions).start();
-		core.currentChar = core.state.sprites['mozart'];
+		var mozart = new core.SpriteSheet(mozartOptions).start();
+		core.state.sprites.push(mozart);
+		core.currentChar = core.state.sprites[0];
 
 		//set up the click listener
 		$('#canvas-wrapper').click(function(evt){
@@ -94,7 +95,11 @@ var core = {
 
 		});
 
-		
+		//set the initial scale of the sprites based on the start width and height
+		core.xRatio = core.width / 1024;
+		core.yRatio = core.height / 1024;
+		core.updateSprites(false);
+
 		core.gameLoop();
 	},
 
@@ -151,8 +156,18 @@ var core = {
 
 	// handle any window resize here
 	resizeWindowCallback: function(){
+
+		var previousWidth = core.width,
+			previousHeight = core.height;
+
 		core.width =  $('#game-inner').innerWidth();
 		core.height = $('#game-inner').innerHeight();
+
+		core.xRatio = core.width / previousWidth;
+		core.yRatio = core.height / previousHeight;
+
+		core.updateSprites(true);
+
 		core.graphWidthMagnifier = core.width / core.graphSize;
 		core.graphHeightMagnifier = core.height / core.graphSize;
 		// resize all of the canvases on the screen to be the same as the window or 'core'
@@ -182,6 +197,22 @@ var core = {
 				ctx.fill();
 			}
 		}	
+    },
+
+    updateSprites: function(locationAlso){
+   
+   		// update the location and the size of the sprites
+    	for(var i = 0; i < core.state.sprites.length; i ++){
+    		var sprite = core.state.sprites[i];
+    		sprite.moving = false;
+    		if(typeof sprite.location !== 'undefined' && locationAlso){
+    			sprite.location.x *= core.xRatio;
+    			sprite.location.y *= core.yRatio;
+    		}
+    		sprite.outputHeight *= core.yRatio;
+    		sprite.outputWidth *= core.xRatio;
+    		sprite.topSpeed *= core.xRatio;
+    	}
     }
 
 } // end the core
