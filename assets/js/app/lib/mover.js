@@ -52,7 +52,7 @@ core.Mover.prototype.seek = function(optionalTarget){
 		desired.mult(this.topSpeed);
 	}
 
-	if(distance < (core.graphMagnifier / 2) && this.graph){
+	if(distance < (core.graphWidthMagnifier / 2) && this.graph){
 		this.processTarget();
 	}
 

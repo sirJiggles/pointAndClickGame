@@ -13,10 +13,15 @@ var core = {
     state 	 	: {
     	sprites: []
     },
+    resizeTimer : null,
     debugMode 	: true,
     currentChar	: null,
     graph 		: null,
-    graphMagnifier : 200,
+    graphWidthMagnifier : null,
+    graphHeightMagnifier: null,
+    graphSize : 10,
+    width : $(window).innerWidth(),
+    height: $(window).innerHeight(),
 
 	// init function
 	init: function(){
@@ -24,37 +29,35 @@ var core = {
 		// init the math utils
 		core.maths = new core.MathUtils();
 
-		// set up some canvases for now
-		var width = $(window).innerWidth(),
-			height = $(window).innerWidth();
-		core.canvas.width = width;
-		core.canvas.height = height;
-		core.canvasTwo.width = width;
-		core.canvasTwo.height = height;
-		core.debugCanvas.width = width;
-		core.debugCanvas.height = height;
+		// resize all of the canvases on the screen to be the same as the window or 'core'
+		core.canvas.width = core.width;
+		core.canvas.height = core.height;
+		core.canvasTwo.width = core.width;
+		core.canvasTwo.height = core.height;
+		core.debugCanvas.width = core.width;
+		core.debugCanvas.height = core.height;
 
-		// set up the graph for the level, this is magnified by say 100 for now
+		// work out based on the width and the height of the window what the ratio of widths and heights for the graph is
+		core.graphWidthMagnifier = core.width / core.graphSize;
+		core.graphHeightMagnifier = core.height / core.graphSize;
+
+		// Sample graph for a level, all graphs for the game are 10 by 10 this is to allow us a ref to be able to resize
 		core.graph = new Graph([
-			[1,1,1,0,1],
-			[0,1,1,0,1],
-			[0,0,1,1,1],
-			[1,1,1,0,0]
+			[1,1,1,0,1,1,1,0,1,1],
+			[0,1,1,0,1,0,0,0,1,1],
+			[0,0,1,1,1,1,1,1,1,1],
+			[1,1,1,0,0,0,0,1,1,0],
+			[1,1,1,1,1,1,1,1,1,0],
+			[0,0,1,1,0,0,1,1,0,0],
+			[0,0,1,1,0,0,1,1,0,0],
+			[1,1,1,1,1,1,1,1,1,1],
+			[1,1,0,0,1,1,0,0,1,1],
+			[0,0,0,0,1,1,0,0,1,1]
 		]);
 
+		// draw the degbug info
 		if(core.debugMode){
-
-			// show the graph
-			var ctx = core.canvasTwo.getContext('2d');
-
-			for(var i = 0; i < core.graph.input.length; i++){
-				for(var j = 0; j < core.graph.input[i].length; j++){
-					ctx.beginPath();
-					ctx.fillStyle = (core.graph.input[i][j] == 1) ? 'blue' : 'red';
-					ctx.rect( (j * core.graphMagnifier),(i * core.graphMagnifier),core.graphMagnifier,core.graphMagnifier);
-					ctx.fill();
-				}
-			}	
+			core.updateDebug();
 		}
 
 		// set up the mozart sprite
@@ -144,6 +147,41 @@ var core = {
 			requestAnimFrame(animloop);
 
 		})();
-	} // end the game loop
+	}, // end the game loop
+
+	// handle any window resize here
+	resizeWindowCallback: function(){
+		core.width =  $(window).innerWidth();
+		core.height = $(window).innerHeight();
+		core.graphWidthMagnifier = core.width / core.graphSize;
+		core.graphHeightMagnifier = core.height / core.graphSize;
+		// resize all of the canvases on the screen to be the same as the window or 'core'
+		core.canvas.width = core.width;
+		core.canvas.height = core.height;
+		core.canvasTwo.width = core.width;
+		core.canvasTwo.height = core.height;
+		core.debugCanvas.width = core.width;
+		core.debugCanvas.height = core.height;
+
+		if(core.debugMode){
+			core.updateDebug();
+		}
+    },
+
+    // a debug function only for debug mode redraw updates
+    updateDebug: function(){
+
+    	// show the graph
+		var ctx = core.canvasTwo.getContext('2d');
+
+		for(var i = 0; i < core.graph.input.length; i++){
+			for(var j = 0; j < core.graph.input[i].length; j++){
+				ctx.beginPath();
+				ctx.fillStyle = (core.graph.input[i][j] == 1) ? 'blue' : 'red';
+				ctx.rect( (j * core.graphWidthMagnifier),(i * core.graphHeightMagnifier),core.graphWidthMagnifier,core.graphHeightMagnifier);
+				ctx.fill();
+			}
+		}	
+    }
 
 } // end the core
