@@ -17,9 +17,9 @@ var core = {
     resizeTimer : null,
     debugMode 	: false,
     currentChar	: null,
-    graph 		: null,
     graphWidthMagnifier : null,
     graphHeightMagnifier: null,
+    playSounds: true,
     graphSize : 10,
     width : $('#game-inner').innerWidth(),
     height: $('#game-inner').innerHeight(),
@@ -32,49 +32,13 @@ var core = {
 
 		core.resizeCanvs();
 
-		// Sample graph for a level, all graphs for the game are 10 by 10 this is to allow us a ref to be able to resize
-		core.graph = new Graph([
-			[0,0,0,0,0,0,0,0,0,0],
-			[0,0,0,0,1,1,1,1,1,0],
-			[0,0,0,0,1,1,0,0,1,0],
-			[0,1,1,1,1,1,1,1,1,0],
-			[0,0,1,1,1,1,1,1,1,0],
-			[0,1,1,1,0,0,1,1,1,0],
-			[0,1,1,1,0,0,1,1,0,0],
-			[0,1,1,1,1,1,1,1,0,0],
-			[0,0,1,0,1,1,1,0,0,0],
-			[0,0,0,0,0,0,0,0,0,0]
-		]);
-
-		// Sample bg sounds
-		core.state.sounds['heaven'] = new Audio('/assets/sounds/heaven.ogg');
-		console.log(core.state.sounds['heaven']);
-		core.playSound('heaven', true);
+		// init room one level one
+		var room = new core.Room(1,1);
 
 		// draw the degbug info
 		if(core.debugMode){
 			core.updateDebug();
 		}
-
-		// set up the mozart sprite
-		var mozartOptions = {
-			file			: 'assets/img/mozart.png',
-			frames			: 5,
-			width			: 136,
-			height			: 297,
-			speed			: 120,
-			outputWidth 	: 72,
-			outputHeight	: 158,
-			x				: 500,
-			y				: 500,
-			once			: false,
-			topSpeed		: 30,
-			graph 			: core.graph
-		};
-
-		var mozart = new core.SpriteSheet(mozartOptions).start();
-		core.state.sprites.push(mozart);
-		core.currentChar = core.state.sprites[0];
 
 		//set up the click listener
 		$('#canvas-wrapper').click(function(evt){
@@ -102,7 +66,9 @@ var core = {
 	// update function this is called each frame
 	update: function(dt){
 
-		core.currentChar.update(dt);
+		if(core.currentChar){
+			core.currentChar.update(dt);
+		}
 		
 	},
 
@@ -180,11 +146,11 @@ var core = {
 		for(var i = 0; i < core.graph.input.length; i++){
 			for(var j = 0; j < core.graph.input[i].length; j++){
 				ctx.beginPath();
-				ctx.fillStyle = (core.graph.input[i][j] == 1) ? 'blue' : 'red';
+				ctx.fillStyle = (core.graph.input[i][j] == 1) ? 'rgba(35,176,204,0.5)' : 'rgba(240,86,94,0.5)';
 				ctx.rect( (j * core.graphWidthMagnifier),(i * core.graphHeightMagnifier),core.graphWidthMagnifier,core.graphHeightMagnifier);
 				ctx.fill();
 			}
-		}	
+		}
     },
 
     updateSprites: function(locationAlso){
@@ -219,7 +185,7 @@ var core = {
     },
 
     playSound: function(name, loop){
-    	
+    	if(!core.playSounds){ return; }
     	core.state.sounds[name].play();
     	if(loop){
     		core.state.sounds[name].loop = true;
