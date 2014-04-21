@@ -67,7 +67,7 @@ core.GraphManager.prototype.processTarget = function(){
 	}
 
 	// handle setting of new target
-	if( core.maths.aboutTheSame( this.location, this.target, core.graphWidthMagnifier ) ){
+	if( core.maths.aboutTheSame( this.location, this.target, core.graphWidthMagnifier / 2) ){
 		this.graphPath.splice(0, 1);
 		this.setNextTarget();
 	}

@@ -29,17 +29,7 @@ var core = {
 		// init the math utils
 		core.maths = new core.MathUtils();
 
-		// resize all of the canvases on the screen to be the same as the window or 'core'
-		core.canvas.width = core.width;
-		core.canvas.height = core.height;
-		core.canvasTwo.width = core.width;
-		core.canvasTwo.height = core.height;
-		core.debugCanvas.width = core.width;
-		core.debugCanvas.height = core.height;
-
-		// work out based on the width and the height of the window what the ratio of widths and heights for the graph is
-		core.graphWidthMagnifier = core.width / core.graphSize;
-		core.graphHeightMagnifier = core.height / core.graphSize;
+		core.resizeCanvs();
 
 		// Sample graph for a level, all graphs for the game are 10 by 10 this is to allow us a ref to be able to resize
 		core.graph = new Graph([
@@ -168,15 +158,7 @@ var core = {
 
 		core.updateSprites(true);
 
-		core.graphWidthMagnifier = core.width / core.graphSize;
-		core.graphHeightMagnifier = core.height / core.graphSize;
-		// resize all of the canvases on the screen to be the same as the window or 'core'
-		core.canvas.width = core.width;
-		core.canvas.height = core.height;
-		core.canvasTwo.width = core.width;
-		core.canvasTwo.height = core.height;
-		core.debugCanvas.width = core.width;
-		core.debugCanvas.height = core.height;
+		core.resizeCanvs();
 
 		if(core.debugMode){
 			core.updateDebug();
@@ -201,7 +183,7 @@ var core = {
 
     updateSprites: function(locationAlso){
    
-   		// update the location and the size of the sprites
+   		// update the location, speed and the size of the sprites
     	for(var i = 0; i < core.state.sprites.length; i ++){
     		var sprite = core.state.sprites[i];
     		sprite.moving = false;
@@ -209,10 +191,25 @@ var core = {
     			sprite.location.x *= core.xRatio;
     			sprite.location.y *= core.yRatio;
     		}
-    		sprite.outputHeight *= core.yRatio;
+    		// set the height to be the same as width to maintain the aspect ratio
+    		sprite.outputHeight *= core.xRatio;
     		sprite.outputWidth *= core.xRatio;
     		sprite.topSpeed *= core.xRatio;
     	}
+    },
+
+    resizeCanvs: function(){
+    	// resize all of the canvases on the screen to be the same as the window or 'core'
+		core.canvas.width = core.width;
+		core.canvas.height = core.height;
+		core.canvasTwo.width = core.width;
+		core.canvasTwo.height = core.height;
+		core.debugCanvas.width = core.width;
+		core.debugCanvas.height = core.height;
+
+		// work out based on the width and the height of the window what the ratio of widths and heights for the graph is
+		core.graphWidthMagnifier = core.width / core.graphSize;
+		core.graphHeightMagnifier = core.height / core.graphSize;
     }
 
 } // end the core
