@@ -32,9 +32,6 @@ core.SpriteSheet = function(options){
 	this.done = true;
 	this.topSpeed = (typeof options.topSpeed !== 'undefined') ? options.topSpeed : 10;
 
-	// we will just scale by width to maintain aspect ratio
-	this.scaleFactor = core.graphWidthMagnifier / 20;
-
 	this.location = new core.Vector2D(options.x, options.y);
 	this.lastLocation = new core.Vector2D(this.location);
 	this.lastRenderLocation = new core.Vector2D(this.location);

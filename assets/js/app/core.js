@@ -11,10 +11,11 @@ var core = {
     currentTime	: 0,
     delta		: 0,
     state 	 	: {
-    	sprites: []
+    	sprites: [],
+    	sounds: {},
     },
     resizeTimer : null,
-    debugMode 	: true,
+    debugMode 	: false,
     currentChar	: null,
     graph 		: null,
     graphWidthMagnifier : null,
@@ -33,17 +34,22 @@ var core = {
 
 		// Sample graph for a level, all graphs for the game are 10 by 10 this is to allow us a ref to be able to resize
 		core.graph = new Graph([
-			[1,1,1,0,1,1,1,0,1,1],
-			[0,1,1,0,1,0,0,0,1,1],
-			[0,0,1,1,1,1,1,1,1,1],
-			[1,1,1,0,0,0,0,1,1,0],
-			[1,1,1,1,1,1,1,1,1,0],
-			[0,0,1,1,0,0,1,1,0,0],
-			[0,0,1,1,0,0,1,1,0,0],
-			[1,1,1,1,1,1,1,1,1,1],
-			[1,1,0,0,1,1,0,0,1,1],
-			[0,0,0,0,1,1,0,0,1,1]
+			[0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,1,1,1,1,1,0],
+			[0,0,0,0,1,1,0,0,1,0],
+			[0,1,1,1,1,1,1,1,1,0],
+			[0,0,1,1,1,1,1,1,1,0],
+			[0,1,1,1,0,0,1,1,1,0],
+			[0,1,1,1,0,0,1,1,0,0],
+			[0,1,1,1,1,1,1,1,0,0],
+			[0,0,1,0,1,1,1,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0]
 		]);
+
+		// Sample bg sounds
+		core.state.sounds['heaven'] = new Audio('/assets/sounds/heaven.ogg');
+		console.log(core.state.sounds['heaven']);
+		core.playSound('heaven', true);
 
 		// draw the degbug info
 		if(core.debugMode){
@@ -59,8 +65,8 @@ var core = {
 			speed			: 120,
 			outputWidth 	: 72,
 			outputHeight	: 158,
-			x				: 0,
-			y				: 400,
+			x				: 500,
+			y				: 500,
 			once			: false,
 			topSpeed		: 30,
 			graph 			: core.graph
@@ -210,6 +216,14 @@ var core = {
 		// work out based on the width and the height of the window what the ratio of widths and heights for the graph is
 		core.graphWidthMagnifier = core.width / core.graphSize;
 		core.graphHeightMagnifier = core.height / core.graphSize;
+    },
+
+    playSound: function(name, loop){
+    	
+    	core.state.sounds[name].play();
+    	if(loop){
+    		core.state.sounds[name].loop = true;
+    	}
     }
 
 } // end the core

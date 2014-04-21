@@ -3,7 +3,7 @@
 core.Mover = function(){
 	
 	// introduce physics
-	this.location = new core.Vector2D;
+	//this.location = new core.Vector2D;
 	this.velocity = new core.Vector2D;
 	this.acceleration = new core.Vector2D;
 
