@@ -14,6 +14,7 @@
  * @depends app/lib/sprite-sheet.js
  * @depends app/lib/debug-dot.js
  * @depends app/lib/room.js
+ * @depends app/lib/door-generator.js
  * @depends ui.js
  */
 

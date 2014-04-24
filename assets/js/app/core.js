@@ -3,26 +3,28 @@
 var core = {
 
 	// set all the properties of the core
-	canvas		: document.getElementById('layerOne'),
-	canvasTwo	: document.getElementById('layerTwo'),
-	debugCanvas	: document.getElementById('debugLayer'),
-	interval	: 1000 / 60,
-    lastTime	: (new Date()).getTime(),
-    currentTime	: 0,
-    delta		: 0,
-    state 	 	: {
-    	sprites: [],
-    	sounds: {},
-    },
-    resizeTimer : null,
-    debugMode 	: false,
-    currentChar	: null,
-    graphWidthMagnifier : null,
+	canvas			: 	document.getElementById('layerOne'),
+	canvasTwo		: 	document.getElementById('layerTwo'),
+	debugCanvas		: 	document.getElementById('debugLayer'),
+	interval		: 	1000 / 60,
+    lastTime		: 	(new Date()).getTime(),
+    currentTime		: 	0,
+    delta			: 	0,
+    state 	 		: 	{
+			    			sprites 	: [],
+			    			sounds 		: {},
+			    			unlocked 	: {},
+			    			room 		: null	
+						},
+    resizeTimer 	: 	null,
+    debugMode 		: 	false,
+    currentChar		: 	null,
+    graphWidthMagnifier: null,
     graphHeightMagnifier: null,
-    playSounds: true,
-    graphSize : 10,
-    width : $('#game-inner').innerWidth(),
-    height: $('#game-inner').innerHeight(),
+    playSounds		: 	false,
+    graphSize		: 	10,
+    width 			: 	$('#game-inner').innerWidth(),
+    height 			: 	$('#game-inner').innerHeight(),
 
 	// init function
 	init: function(){
@@ -33,7 +35,8 @@ var core = {
 		core.resizeCanvs();
 
 		// init room one level one
-		var room = new core.Room(1,1);
+		core.state.room = new core.Room();
+		core.state.room.prepareRoom(1,1);
 
 		// draw the degbug info
 		if(core.debugMode){
