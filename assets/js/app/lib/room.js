@@ -18,10 +18,9 @@ core.Room.prototype.prepareRoom = function(level, room){
 			core.debug('Unable to load JSON room data', 'FATAL');
 			return false;
 		}
-
-		// make sure we have all we need for the room
-		if(typeof data.gridPos === 'undefined' || typeof data.music === 'undefined' || typeof data.graph === 'undefined'){
-			core.debug('Unable to load the room '+level+'/'+room, 'FATAL');
+		// sanity checking args
+		if(!core.sanityCheck([data.gridPos, data.music, data.graph, data.doors, data.background])){
+			core.debug('Invaild args passed to Room class, core sanity', 'FATAL');
 			return false;
 		}
 
@@ -29,8 +28,11 @@ core.Room.prototype.prepareRoom = function(level, room){
 		core.state.sounds[data.music.name] = new Audio('assets/sounds/'+data.music.file);
 		core.playSound(data.music.name, data.music.loop);
 
+		// set the bg image
+		$('#game-inner').css('background-image', 'url("../assets/img/backgrounds/'+data.background+'")');
+
 		// sort out the doors on the room
-		var doors = new core.DoorGenerator(data.doors, level, room);
+		var doors = new core.DoorGenerator(data.doors);
 
 		// create the graph for the char
 		var graph = new Graph(data.graph);
@@ -41,8 +43,8 @@ core.Room.prototype.prepareRoom = function(level, room){
 				core.debug('Unable to load the chars file for the room', 'FATAL');
 				return false;
 			}
-			if(typeof charData[data.char] === 'undefined'){
-				core.debug('Could not find the char for this room in char JSON file', 'FATAL');
+			if(!core.sanityCheck([charData[data.char]])){
+				core.debug('Could not set up char, sanity chck fail in json read', 'FATAL');
 				return false;
 			}
 

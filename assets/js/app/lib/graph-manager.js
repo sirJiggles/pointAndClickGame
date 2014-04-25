@@ -14,10 +14,8 @@ core.GraphManager.prototype.getRoute = function() {
 		endY = Math.floor(this.target.y / core.graphHeightMagnifier);
 
 	// sanity check a condition that will only happen if you click of the grid
-	if (typeof this.graph.nodes[startY] === 'undefined' || typeof this.graph.nodes[endY] === 'undefined'){
-		return false;
-	}
-	if (typeof this.graph.nodes[startY][startY] === 'undefined' || typeof this.graph.nodes[endY][endX] === 'undefined'){
+	if(!core.sanityCheck([this.graph.nodes[startY],this.graph.nodes[endY],this.graph.nodes[startY][startY],this.graph.nodes[endY][endX]])){
+		core.debug('Unable to find the start locations in the nodes on graphs array', 'WARNING');
 		return false;
 	}
 
@@ -48,7 +46,7 @@ core.GraphManager.prototype.updateGraph = function(){
 
 core.GraphManager.prototype.setNextTarget = function(){
 
-	if ( typeof this.graphPath[0] === 'undefined' ){
+	if ( !core.sanityCheck([this.graphPath[0]])){
 		return false;
 	}
 	// set the new target to be the center of the next cell on route to final target

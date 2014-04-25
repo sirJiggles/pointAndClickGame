@@ -17,7 +17,7 @@ var core = {
 			    			room 		: null	
 						},
     resizeTimer 	: 	null,
-    debugMode 		: 	false,
+    debugMode 		: 	true,
     currentChar		: 	null,
     graphWidthMagnifier: null,
     graphHeightMagnifier: null,
@@ -42,21 +42,6 @@ var core = {
 		if(core.debugMode){
 			core.updateDebug();
 		}
-
-		//set up the click listener
-		$('#canvas-wrapper').click(function(evt){
-
-			// get the location of the click
-			var offset = $(this).offset(); 
-			var newX = evt.pageX - offset.left,
-				newY = evt.pageY - offset.top;
-			// set the current active char to have a new target and be moving toward it
-			core.currentChar.target = new core.Vector2D(newX, newY);
-			core.currentChar.originalTarget = new core.Vector2D(newX, newY);
-			core.currentChar.moving = true;
-			core.currentChar.newTarget = true;
-
-		});
 
 		//set the initial scale of the sprites based on the start width and height
 		core.xRatio = core.width / 1024;
@@ -145,13 +130,14 @@ var core = {
 
     	// show the graph
 		var ctx = core.canvasTwo.getContext('2d');
-
-		for(var i = 0; i < core.graph.input.length; i++){
-			for(var j = 0; j < core.graph.input[i].length; j++){
-				ctx.beginPath();
-				ctx.fillStyle = (core.graph.input[i][j] == 1) ? 'rgba(35,176,204,0.5)' : 'rgba(240,86,94,0.5)';
-				ctx.rect( (j * core.graphWidthMagnifier),(i * core.graphHeightMagnifier),core.graphWidthMagnifier,core.graphHeightMagnifier);
-				ctx.fill();
+		if(core.currentChar){
+			for(var i = 0; i < core.currentChar.graph.input.length; i++){
+				for(var j = 0; j < core.currentChar.graph.input[i].length; j++){
+					ctx.beginPath();
+					ctx.fillStyle = (core.currentChar.graph.input[i][j] == 1) ? 'rgba(35,176,204,0.5)' : 'rgba(240,86,94,0.5)';
+					ctx.rect( (j * core.graphWidthMagnifier),(i * core.graphHeightMagnifier),core.graphWidthMagnifier,core.graphHeightMagnifier);
+					ctx.fill();
+				}
 			}
 		}
     },
@@ -193,6 +179,16 @@ var core = {
     	if(loop){
     		core.state.sounds[name].loop = true;
     	}
+    },
+
+    // sanity check utils function
+    sanityCheck : function(vars){
+    	for(var i = 0; i < vars.length; i ++){
+    		if(typeof vars[i] === 'undefined'){
+    			return false;
+    		}
+    	}
+    	return true;
     }
 
 } // end the core

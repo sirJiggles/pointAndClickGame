@@ -16,6 +16,7 @@
 						"loop" : true,
 						"file" : "heaven.ogg"
 					},
+	"background":	"heaven-1.jpg",
 	"doors" 	: 	[
 						{
 							"location"  : [5,9],

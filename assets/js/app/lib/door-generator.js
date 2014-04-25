@@ -1,6 +1,6 @@
 core.DoorGenerator = function(doors){
 
-    if(typeof doors === 'undefined'){
+    if(!core.sanityCheck([doors])){
         core.debug('Unable to insert doors when loading level, do not have all the constructor args', 'FATAL');
         return false;
     }
@@ -14,12 +14,12 @@ core.DoorGenerator.prototype.insertDoors = function(){
         // generate some dom content for the door
         var dom = '<a href="#" class="door down-'+this.doors[i].location[0]+' accross-'+this.doors[i].location[1]+'" data-level="'+this.doors[i].level+'" data-room="'+this.doors[i].room+'"></a>';
         // add it to the body
-        $(document.body).append(dom);
+        $('#game-inner').append(dom);
     };
 
     // add the click events for all the doors
     $('.door').click(function(evt){
-        evt.preventdefault();
+        evt.preventDefault();
 
         var requestedLvl = $(this).attr('data-level'),
             requestedRoom = $(this).attr('data-room');

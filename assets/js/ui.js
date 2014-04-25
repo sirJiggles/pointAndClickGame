@@ -20,6 +20,21 @@ $(window).ready(function(){
 		item.addEventListener('dragover', Drag.dragOver, false);
 		item.addEventListener('drop', Drag.drop, false);
 	});
+
+	//set up the click listener (point & click)
+	$('#game-inner').click(function(evt){
+
+		// get the location of the click
+		var offset = $(this).offset(); 
+		var newX = evt.pageX - offset.left,
+			newY = evt.pageY - offset.top;
+		// set the current active char to have a new target and be moving toward it
+		core.currentChar.target = new core.Vector2D(newX, newY);
+		core.currentChar.originalTarget = new core.Vector2D(newX, newY);
+		core.currentChar.moving = true;
+		core.currentChar.newTarget = true;
+
+	});
 	
 
 });

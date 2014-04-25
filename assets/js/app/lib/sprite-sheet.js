@@ -4,13 +4,8 @@ core.SpriteSheet = function(options){
 
 	
 	// These are the args we will neeed by default
-	if( typeof options.file === 'undefined' || 
-		typeof options.frames === 'undefined' ||
-		typeof options.width === 'undefined' ||
-		typeof options.height === 'undefined'){
-
+	if( !core.sanityCheck([options.file, options.frames, options.width, options.height]) ){
 		core.debug('Call to sprite sheet with '+options.file+ ' failed, missing required options', 'FATAL');
-
 		return false;
 	}
 
@@ -66,7 +61,7 @@ core.SpriteSheet.prototype.stop = function(first_argument) {
 // update function
 core.SpriteSheet.prototype.update = function(dt){
 
-	if(typeof dt === 'undefined'){return false;}
+	if(!core.sanityCheck([dt])){return false;}
 
 	if(!this.done){
 		// update the index based on the delta
