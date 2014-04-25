@@ -113,3 +113,8 @@ core.SpriteSheet.prototype.render = function(){
 	// run any mover code
 	this.move();
 }
+
+// clear the whole canvas
+core.SpriteSheet.prototype.clear = function() {
+	this.ctx.clearRect(0,0,core.width,core.height);
+};

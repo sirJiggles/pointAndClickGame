@@ -24,13 +24,13 @@ core.DoorGenerator.prototype.insertDoors = function(){
         var requestedLvl = $(this).attr('data-level'),
             requestedRoom = $(this).attr('data-room');
     
-        if(typeof core.state.unlocked[requestedLvl] === 'undefined' || typeof core.state.unlocked[requestedRoom] === 'undefined'){
+        if(typeof core.state.unlocked[requestedLvl] === 'undefined' || typeof core.state.unlocked[requestedLvl][requestedRoom] === 'undefined'){
             core.debug('Tried to access resource with no unlock state', 'WARNING');
             return false;
         }
 
-        // clear the current room
-        core.state.room.clear();
+        // clear the char canvas
+        core.clearScreen();
         // load the next room
         core.state.room.prepareRoom(requestedLvl, requestedRoom);
 

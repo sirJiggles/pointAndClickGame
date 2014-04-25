@@ -13,11 +13,11 @@ var core = {
     state 	 		: 	{
 			    			sprites 	: [],
 			    			sounds 		: {},
-			    			unlocked 	: {},
+			    			unlocked 	: [],
 			    			room 		: null	
 						},
     resizeTimer 	: 	null,
-    debugMode 		: 	true,
+    debugMode 		: 	false,
     currentChar		: 	null,
     graphWidthMagnifier: null,
     graphHeightMagnifier: null,
@@ -32,11 +32,14 @@ var core = {
 		// init the math utils
 		core.maths = new core.MathUtils();
 
+		// for now spoof the authentication on the rooms
+		core.state.unlocked.push([0,1]);
+
 		core.resizeCanvs();
 
 		// init room one level one
 		core.state.room = new core.Room();
-		core.state.room.prepareRoom(1,1);
+		core.state.room.prepareRoom(0,0);
 
 		// draw the degbug info
 		if(core.debugMode){
@@ -156,6 +159,12 @@ var core = {
     		sprite.outputHeight *= core.xRatio;
     		sprite.outputWidth *= core.xRatio;
     		sprite.topSpeed *= core.xRatio;
+    	}
+    },
+
+    clearScreen: function(){
+    	for(var i = 0; i < core.state.sprites.length; i ++){
+    		core.state.sprites[i].clear();
     	}
     },
 

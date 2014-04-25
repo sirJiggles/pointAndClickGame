@@ -406,6 +406,7 @@ body {
 #game-wrapper {
   width: 100%;
   position: relative;
+  display: table;
 }
 #game-wrapper:after {
   content: "";

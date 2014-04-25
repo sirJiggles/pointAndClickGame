@@ -32,6 +32,7 @@ core.Room.prototype.prepareRoom = function(level, room){
 		$('#game-inner').css('background-image', 'url("../assets/img/backgrounds/'+data.background+'")');
 
 		// sort out the doors on the room
+		$('.door').remove();
 		var doors = new core.DoorGenerator(data.doors);
 
 		// create the graph for the char
@@ -56,6 +57,9 @@ core.Room.prototype.prepareRoom = function(level, room){
 			charOptions.y = (core.graphHeightMagnifier * data.gridPos[0]) + (core.graphWidthMagnifier / 2);
 
 			var mainChar = new core.SpriteSheet(charOptions).start();
+
+			// remove all old sprites
+			core.state.sprites = [];
 			core.state.sprites.push(mainChar);
 			core.currentChar = mainChar;
 			// set the sprite ratio
