@@ -338,6 +338,7 @@ textarea {
   -moz-transition: bottom 0.2s linear;
   -o-transition: bottom 0.2s linear;
   transition: bottom 0.2s linear;
+  left: 50%;
 }
 .inventory.open {
   bottom: 0px;

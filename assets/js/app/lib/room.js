@@ -28,8 +28,9 @@ core.Room.prototype.prepareRoom = function(level, room){
 		}
 
 		// set up the music
-		core.state.sounds[data.music.name] = new Audio('assets/sounds/'+data.music.file);
-		core.playSound(data.music.name, data.music.loop);
+		var bgMusic = new Audio('assets/sounds/'+data.music.file);
+		core.state.sounds.push(bgMusic);
+		core.playSound(0, data.music.loop);
 
 		// set the bg image
 		$('#game-inner').css('background-image', 'url("assets/img/backgrounds/'+data.background+'")');
@@ -74,12 +75,17 @@ core.Room.prototype.prepareRoom = function(level, room){
 };
 
 core.Room.prototype.clear = function() {
+	
 	core.pause();
 	// clear the screen of all the sprites
 	core.clearScreen();
 	// remove all old sprites
 	core.state.sprites = [];
+	// unload sounds
+	core.clearSounds();
 	// remove old doors
 	$('.door').remove();
 	core.play();
+	core.resizeWindowCallback();
+
 };

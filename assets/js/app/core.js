@@ -14,7 +14,7 @@ var core = {
     delta			: 	0,
     state 	 		: 	{
 			    			sprites 	: [],
-			    			sounds 		: {},
+			    			sounds 		: [],
 			    			unlocked 	: [],
 			    			room 		: null	
 						},
@@ -23,7 +23,7 @@ var core = {
     currentChar		: 	null,
     graphWidthMagnifier: null,
     graphHeightMagnifier: null,
-    playSounds		: 	false,
+    playSounds		: 	true,
     graphSize		: 	10,
     width 			: 	$('#game-wrapper').innerWidth(),
     height 			: 	$('#game-wrapper').innerHeight(),
@@ -35,6 +35,7 @@ var core = {
 		// init the math utils
 		core.maths = new core.MathUtils();
 
+		// start the game
 		core.play();
 
 		// for now spoof the authentication on the rooms
@@ -140,6 +141,11 @@ var core = {
 			'margin-left':-core.width / 2
 		});
 
+		$('.inventory').css({
+			'width': core.width,
+			'margin-left':-core.width / 2
+		});
+
 		core.xRatio = core.width / previousWidth;
 		core.yRatio = core.height / previousHeight;
 
@@ -206,12 +212,23 @@ var core = {
 		core.graphHeightMagnifier = core.height / core.graphSize;
     },
 
-    playSound: function(name, loop){
+    playSound: function(index, loop){
     	if(!core.playSounds){ return; }
-    	core.state.sounds[name].play();
-    	if(loop){
-    		core.state.sounds[name].loop = true;
+    	core.state.sounds[index].play();
+		if(loop){
+    		core.state.sounds[index].loop = true;
     	}
+    	
+    },
+    stopSound:  function(index){
+    	core.state.sounds[index].pause();	
+    },
+    clearSounds: function(){
+    	for(var i = 0; i < core.state.sounds.length; i++){
+    		core.state.sounds[i].pause();
+    	}
+    	// reset the array
+    	core.state.sounds = [];
     },
 
     // sanity check utils function
