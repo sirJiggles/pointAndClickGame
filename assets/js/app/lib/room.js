@@ -3,10 +3,10 @@ core.Room = function(){
 }
 
 // get the json data for the room and start to get it all ready
-core.Room.prototype.prepareRoom = function(level, room){
+core.Room.prototype.prepareRoom = function(level, room, startPos){
 
 	// sanity checking
-	if(typeof level === 'undefined' || typeof room === 'undefined'){
+	if(!core.sanityCheck([level, room, startPos])){
 		core.debug('Tried to init a room without a level and room', 'FATAL');
 		return false;
 	}
@@ -22,7 +22,7 @@ core.Room.prototype.prepareRoom = function(level, room){
 			return false;
 		}
 		// sanity checking args
-		if(!core.sanityCheck([data.gridPos, data.music, data.graph, data.doors, data.background])){
+		if(!core.sanityCheck([data.music, data.graph, data.doors, data.background])){
 			core.debug('Invaild args passed to Room class, core sanity', 'FATAL');
 			return false;
 		}
@@ -60,8 +60,8 @@ core.Room.prototype.prepareRoom = function(level, room){
 			charOptions.graph = graph;
 
 			// set the location to be the grid pos passed in
-			charOptions.x = (core.graphWidthMagnifier * data.gridPos[1]) + (core.graphWidthMagnifier / 2);
-			charOptions.y = (core.graphHeightMagnifier * data.gridPos[0]) + (core.graphWidthMagnifier / 2);
+			charOptions.x = (core.graphWidthMagnifier * startPos[0]) + (core.graphWidthMagnifier / 2);
+			charOptions.y = (core.graphHeightMagnifier * startPos[1]) + (core.graphWidthMagnifier / 2);
 
 			var mainChar = new core.SpriteSheet(charOptions).start();
 
@@ -70,6 +70,10 @@ core.Room.prototype.prepareRoom = function(level, room){
 
 			// set the sprite ratio
 			core.updateSprites(false);
+
+			if(core.debugMode){
+				core.updateDebug();
+			}
 		});
 	});
 };

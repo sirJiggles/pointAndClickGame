@@ -10,7 +10,6 @@
 					 [0,1,0,0,1,1,1,1,1,0],
 					 [0,0,0,0,0,0,0,0,0,0]],
 	"char" 		: 	"mozart",
-	"gridPos"	: 	[1,8],
 	"music"		:	{
 						"loop" : true,
 						"file" : "heaven.ogg"
@@ -18,9 +17,10 @@
 	"background":	"heaven-1.jpg",
 	"doors" 	: 	[
 						{
-							"location"  : [5,9],
+							"location"  : [9,5],
 							"level"		: 0,
-							"room"		: 1
+							"room"		: 1,
+							"start"		: [0,5]
 						}
 					]
 

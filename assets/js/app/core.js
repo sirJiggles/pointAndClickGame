@@ -46,12 +46,7 @@ var core = {
 
 		// init room one level one
 		core.state.room = new core.Room();
-		core.state.room.prepareRoom(0,0);
-
-		// draw the degbug info
-		if(core.debugMode){
-			core.updateDebug();
-		}
+		core.state.room.prepareRoom(0,0,[1,8]);
 
 	},
 
@@ -68,22 +63,8 @@ var core = {
 		requestAnimFrame = null;
 	},
 
-	play: function(){
-		core.gameLoop();
-	},
-
-	// simple debuging helper
-	debug: function(msg, lvl){
-		console.log('================== DEBUG MSG ===============');
-		console.log(msg);
-		if(typeof lvl !== 'undefined'){
-			console.log(' WARNING LVL: '+lvl);
-		}
-		console.log('================= END DEBUG ================');
-	},
-
 	// game loop function
-	gameLoop: function(){
+	play: function(){
 
 		// shim layer with setTimeout fallback
 		window.requestAnimFrame = (function(){
@@ -115,6 +96,16 @@ var core = {
 
 		})();
 	}, // end the game loop
+
+	// simple debuging helper
+	debug: function(msg, lvl){
+		console.log('================== DEBUG MSG ===============');
+		console.log(msg);
+		if(typeof lvl !== 'undefined'){
+			console.log(' WARNING LVL: '+lvl);
+		}
+		console.log('================= END DEBUG ================');
+	},
 
 	// handle any window resize here
 	resizeWindowCallback: function(){
@@ -160,9 +151,10 @@ var core = {
 
     // a debug function only for debug mode redraw updates
     updateDebug: function(){
-
     	// show the graph
 		var ctx = core.canvases[1].getContext('2d');
+		//clear the screen first
+		ctx.clearRect(0,0,core.width,core.height);
 		if(core.currentChar){
 			for(var i = 0; i < core.currentChar.graph.input.length; i++){
 				for(var j = 0; j < core.currentChar.graph.input[i].length; j++){
@@ -198,7 +190,6 @@ var core = {
     	for(var i = 0; i < core.state.sprites.length; i ++){
     		core.state.sprites[i].clear();
     	}
-    	core.resizeCanvs();
     },
 
     resizeCanvs: function(){
