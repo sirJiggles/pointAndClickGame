@@ -189,6 +189,7 @@ var core = {
     		sprite.outputHeight *= core.xRatio;
     		sprite.outputWidth *= core.xRatio;
     		sprite.topSpeed *= core.xRatio;
+    		sprite.clear();
     	}
 
     },

@@ -75,17 +75,11 @@ core.Room.prototype.prepareRoom = function(level, room){
 };
 
 core.Room.prototype.clear = function() {
-	
-	core.pause();
-	// clear the screen of all the sprites
-	core.clearScreen();
 	// remove all old sprites
 	core.state.sprites = [];
 	// unload sounds
 	core.clearSounds();
 	// remove old doors
 	$('.door').remove();
-	core.play();
-	core.resizeWindowCallback();
 
 };

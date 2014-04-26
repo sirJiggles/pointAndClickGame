@@ -12,7 +12,6 @@
 	"char" 		: 	"mozart",
 	"gridPos"	: 	[1,8],
 	"music"		:	{
-						"name" : "heaven",
 						"loop" : true,
 						"file" : "heaven.ogg"
 					},
