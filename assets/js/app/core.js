@@ -3,9 +3,11 @@
 var core = {
 
 	// set all the properties of the core
-	canvas			: 	document.getElementById('layerOne'),
-	canvasTwo		: 	document.getElementById('layerTwo'),
-	debugCanvas		: 	document.getElementById('debugLayer'),
+	canvases		: 	[
+							document.getElementById('sprites'),
+							document.getElementById('graph'),
+							document.getElementById('debugLayer')
+						],
 	interval		: 	1000 / 60,
     lastTime		: 	(new Date()).getTime(),
     currentTime		: 	0,
@@ -23,8 +25,9 @@ var core = {
     graphHeightMagnifier: null,
     playSounds		: 	false,
     graphSize		: 	10,
-    width 			: 	$('#game-inner').innerWidth(),
-    height 			: 	$('#game-inner').innerHeight(),
+    width 			: 	$('#game-wrapper').innerWidth(),
+    height 			: 	$('#game-wrapper').innerHeight(),
+    widthToHeight	:   4 / 3,
 
 	// init function
 	init: function(){
@@ -32,10 +35,13 @@ var core = {
 		// init the math utils
 		core.maths = new core.MathUtils();
 
+		core.play();
+
 		// for now spoof the authentication on the rooms
 		core.state.unlocked.push([0,1]);
 
-		core.resizeCanvs();
+		// set the scene sizes up
+		core.resizeWindowCallback();
 
 		// init room one level one
 		core.state.room = new core.Room();
@@ -46,12 +52,6 @@ var core = {
 			core.updateDebug();
 		}
 
-		//set the initial scale of the sprites based on the start width and height
-		core.xRatio = core.width / 1024;
-		core.yRatio = core.height / 1024;
-		core.updateSprites(false);
-
-		core.gameLoop();
 	},
 
 	// update function this is called each frame
@@ -61,6 +61,14 @@ var core = {
 			core.currentChar.update(dt);
 		}
 		
+	},
+
+	pause: function(){
+		requestAnimFrame = null;
+	},
+
+	play: function(){
+		core.gameLoop();
 	},
 
 	// simple debuging helper
@@ -111,10 +119,26 @@ var core = {
 	resizeWindowCallback: function(){
 
 		var previousWidth = core.width,
-			previousHeight = core.height;
+			previousHeight = core.height,
+			wrapper = $('#game-wrapper'),
+			inner = $('#game-inner');
 
-		core.width =  $('#game-inner').innerWidth();
-		core.height = $('#game-inner').innerHeight();
+		core.width =  $(wrapper).innerWidth();
+		core.height = $(wrapper).innerHeight();
+
+		var newWidthToHeight = core.width / core.height;
+		if(newWidthToHeight > core.widthToHeight){
+			core.width = core.height * core.widthToHeight;
+		}else{
+			core.height = core.width / core.widthToHeight;
+		}
+
+		$(inner).css({
+			'width': core.width,
+			'height': core.height,
+			'margin-top':-core.height / 2,
+			'margin-left':-core.width / 2
+		});
 
 		core.xRatio = core.width / previousWidth;
 		core.yRatio = core.height / previousHeight;
@@ -132,7 +156,7 @@ var core = {
     updateDebug: function(){
 
     	// show the graph
-		var ctx = core.canvasTwo.getContext('2d');
+		var ctx = core.canvases[1].getContext('2d');
 		if(core.currentChar){
 			for(var i = 0; i < core.currentChar.graph.input.length; i++){
 				for(var j = 0; j < core.currentChar.graph.input[i].length; j++){
@@ -160,22 +184,22 @@ var core = {
     		sprite.outputWidth *= core.xRatio;
     		sprite.topSpeed *= core.xRatio;
     	}
+
     },
 
     clearScreen: function(){
     	for(var i = 0; i < core.state.sprites.length; i ++){
     		core.state.sprites[i].clear();
     	}
+    	core.resizeCanvs();
     },
 
     resizeCanvs: function(){
     	// resize all of the canvases on the screen to be the same as the window or 'core'
-		core.canvas.width = core.width;
-		core.canvas.height = core.height;
-		core.canvasTwo.width = core.width;
-		core.canvasTwo.height = core.height;
-		core.debugCanvas.width = core.width;
-		core.debugCanvas.height = core.height;
+    	for(var i = 0; i < core.canvases.length; i ++){
+    		core.canvases[i].width = core.width;
+    		core.canvases[i].height = core.height;
+    	}
 
 		// work out based on the width and the height of the window what the ratio of widths and heights for the graph is
 		core.graphWidthMagnifier = core.width / core.graphSize;

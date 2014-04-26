@@ -11,6 +11,9 @@ core.Room.prototype.prepareRoom = function(level, room){
 		return false;
 	}
 
+	// do some room clearance first
+	this.clear();
+
 	// get the JSON for the room
 	$.getJSON('assets/data/levels/'+level+'/'+room+'.json', function(data,status){
 
@@ -32,11 +35,14 @@ core.Room.prototype.prepareRoom = function(level, room){
 		$('#game-inner').css('background-image', 'url("assets/img/backgrounds/'+data.background+'")');
 
 		// sort out the doors on the room
-		$('.door').remove();
 		var doors = new core.DoorGenerator(data.doors);
 
 		// create the graph for the char
 		var graph = new Graph(data.graph);
+
+		// set the initial x and y ratio based on the start screen size
+		core.xRatio = core.width / 1024;
+		core.yRatio = core.height / 768;
 
 		// check what the main char for this room is and attach the graph to it
 		$.getJSON('assets/data/chars.json', function(charData, charStatus){
@@ -58,10 +64,9 @@ core.Room.prototype.prepareRoom = function(level, room){
 
 			var mainChar = new core.SpriteSheet(charOptions).start();
 
-			// remove all old sprites
-			core.state.sprites = [];
 			core.state.sprites.push(mainChar);
 			core.currentChar = mainChar;
+
 			// set the sprite ratio
 			core.updateSprites(false);
 		});
@@ -69,5 +74,12 @@ core.Room.prototype.prepareRoom = function(level, room){
 };
 
 core.Room.prototype.clear = function() {
-
+	core.pause();
+	// clear the screen of all the sprites
+	core.clearScreen();
+	// remove all old sprites
+	core.state.sprites = [];
+	// remove old doors
+	$('.door').remove();
+	core.play();
 };

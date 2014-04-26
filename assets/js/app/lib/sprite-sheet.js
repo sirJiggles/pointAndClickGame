@@ -15,7 +15,7 @@ core.SpriteSheet = function(options){
 	this.frames = options.frames;
 	this.width = options.width;
 	this.height = options.height;
-	this.canvas = (typeof options.canvas !== 'undefined') ? options.canvas : core.canvas;
+	this.canvas = (typeof options.canvas !== 'undefined') ? options.canvas : core.canvases[0];
 	// how fast in ms between each frame
 	this.speed = (typeof options.speed !== 'undefined') ? options.speed : 500; 
 	this.once =  (typeof options.once !== 'undefined') ? options.once : true

@@ -405,29 +405,18 @@ body {
 
 #game-wrapper {
   width: 100%;
-  position: relative;
-  display: table;
-}
-#game-wrapper:after {
-  content: "";
-  display: block;
-  padding-top: 60%;
+  height: 100%;
 }
 #game-wrapper #game-inner {
   position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  left: 50%;
+  top: 50%;
   -webkit-background-size: 100% 100%;
   -moz-background-size: 100% 100%;
   -o-background-size: 100% 100%;
   background-size: 100% 100%;
-  max-height: 100%;
 }
 #game-wrapper canvas {
-  height: auto;
-  width: 100%;
   position: absolute;
 }
 

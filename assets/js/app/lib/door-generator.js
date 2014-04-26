@@ -29,8 +29,6 @@ core.DoorGenerator.prototype.insertDoors = function(){
             return false;
         }
 
-        // clear the char canvas
-        core.clearScreen();
         // load the next room
         core.state.room.prepareRoom(requestedLvl, requestedRoom);
 

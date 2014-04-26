@@ -5,9 +5,9 @@
 		"width" : 136,
 		"height" : 297,
 		"speed" : 120,
-		"outputWidth" : 72,
-		"outputHeight" : 158,
+		"outputWidth" : 45,
+		"outputHeight" : 99,
 		"once" : false,
-		"topSpeed" : 30
+		"topSpeed" : 28
 	}
 }

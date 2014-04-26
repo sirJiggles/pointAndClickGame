@@ -2,7 +2,7 @@
 
 core.DebugDot = function(options){
 	
-	this.canvas = core.debugCanvas;
+	this.canvas = core.canvases[2];
 	this.ctx = this.canvas.getContext('2d');
 	this.radius = 10;
 
