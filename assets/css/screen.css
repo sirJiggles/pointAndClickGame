@@ -6,15 +6,8 @@
   background: url('/assets/img/icons-2x-s15c5cd744d.png') no-repeat;
 }
 
-.site-header h1 {
-  font-size: 6.0em;
-  line-height: 1.0em;
-  color: #010101;
-  font-family: 'Limelight', cursive;
-  margin: 0;
-  padding: 40px 0 40px 0;
-  text-shadow: 0px 0px 10px #000;
-  text-align: center;
+.main-nav {
+  margin: 20px 0 20px 0;
 }
 
 /* Styles for the inventory */
@@ -88,6 +81,10 @@ body, html {
 body {
   position: relative;
   overflow: hidden;
+}
+
+.container {
+  height: 100%;
 }
 
 #game-wrapper {
@@ -250,9 +247,24 @@ body {
 /* LESS THAN TABLET */
 /* LESS THAN MOBILE LANDSCAPE */
 /* Styles for the index page (login in and registering) */
+.index {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+.index .index-inner {
+  display: table-cell;
+  vertical-align: middle;
+}
 .index h2 {
   margin: 0px;
   font-size: 1.2em;
+}
+.index h3 {
+  display: block;
+  float: left;
+  width: 100%;
+  font-size: 1.4em;
 }
 .index ul {
   list-style-type: none;

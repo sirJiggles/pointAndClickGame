@@ -1,9 +1,24 @@
 /* Styles for the index page (login in and registering) */
 .index{
 
+	display:table;
+	height:100%;
+	width:100%;
+
+	.index-inner{
+		display:table-cell;
+	    vertical-align:middle;
+	}
+
 	h2{
 		margin:0px;
 		font-size:1.2em;
+	}
+
+	h3 {
+		@include block-left;
+		width:100%;
+		font-size: 1.4em;
 	}
 
 	ul{

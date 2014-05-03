@@ -51,15 +51,15 @@
     <!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
 
         <div class="container">
-
-            <ul class="nav nav-pills">
-                <li><a class="active" href="/">Home</a></li>
-        		<% if (user) { %>
-                    <li><a href="/account" title="your account">Account</a></li>
-                    <li><a href="/logout" title="logout">Logout</a></li>
-        		<% } %>
+  
+    		<% if (user) { %>
+            <ul class="nav nav-pills main-nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="/account" title="your account">Account</a></li>
+                <li><a href="/logout" title="logout">Logout</a></li>
             </ul>
-            
+    		<% } %>
+
     		<%- body %>
 
         </div>
