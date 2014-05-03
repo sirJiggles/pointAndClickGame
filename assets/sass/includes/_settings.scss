@@ -4,32 +4,10 @@ $tablet: 850px;
 $desktop: 960px;
 $dekstopLarge: 1530px;
 
-$base-font: 10;
-$bodyFontSize: 10px;
-$base-font-size: $bodyFontSize;
-
-$site-width: 960;
-$cols: 12;
-
-$gutter-width: ((($site-width / $cols) / 3) / $site-width) * 100%;
-$gutter-width-abs: ($site-width / $cols) / 4;
-$total-gutter: (($site-width / $cols) / 3) * ($cols - 1);
-$remaining-page: $site-width - $total-gutter;
-$col-width: (($remaining-page / $cols) / $site-width) * 100%;
-$col-width-abs: ($remaining-page / $cols) + ($cols / 2);
-
-$footer-height: 20;
-
 $border-box-sizing: true;
 
-$textColor: #555;
-$borderColor:#999;
-//green
-$color1: #2cbd21;
-//white
-$color2: #fff;
-//black
-$color3: #000;
+$color-blue:#428bca;
+$color-grey:#333;
 
-$siteUrl:'http://game.dev';
+$siteUrl:'http://localhost:3001';
 //$siteUrl:'http://www.game.com';

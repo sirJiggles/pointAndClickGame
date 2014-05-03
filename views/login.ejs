@@ -1,2 +1,20 @@
-<a href="/auth/facebook"><img src="assets/img/login-with-facebook.png"></a>
-<a href="/auth/twitter"><img src="assets/img/login-with-twitter.png"></a>
+<% layout('layout') -%>
+
+<!-- Show messages for login state -->
+<% if (message) { %>
+	<p><%= message %></p>
+<% } %>
+
+<form action="/login" method="post">
+	<div>
+		<label>Username:</label>
+		<input type="text" name="username" placeholder="Your Username" /><br/>
+	</div>
+	<div>
+		<label>Password:</label>
+		<input type="password" name="password"/>
+	</div>
+	<div>
+		<input type="submit" value="Submit"/>
+	</div>
+</form>

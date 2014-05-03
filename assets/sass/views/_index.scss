@@ -1,0 +1,51 @@
+/* Styles for the index page (login in and registering) */
+.index{
+
+	h2{
+		margin:0px;
+		font-size:1.2em;
+	}
+
+	ul{
+		list-style-type:none;
+		@include reset-box;
+		@include border-radius(5px);
+		border:1px solid #ddd;
+		@include block-left;
+		width:100%;
+
+		li{
+			width:100%;
+			@include reset-box;
+			@include block-left;
+
+			a{
+				@include block-left;
+				width:100%;
+				text-decoration:none;
+				font-size:1.3em;
+				color:$color-grey;
+				padding:10px;
+				background-color: #ddd;
+
+				&:hover{
+					background-color: $color-blue;
+					color:white;
+
+					span{
+						color:white;
+					}
+				}
+
+				span{
+					margin: 0 10px 0 0;
+					color:$color-grey;
+					font-size: 1.5em;
+					@include block-left;
+				}
+
+			}
+		}
+	}
+
+}

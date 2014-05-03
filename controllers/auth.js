@@ -19,9 +19,9 @@
 		//   request.  If authentication fails, the user will be redirected back to the
 		//   login page.  Otherwise, the primary route function function will be called,
 		//   which, in this example, will redirect the user to the home page.
-		app.get('/auth/facebook/callback', auth.passport.authenticate('facebook', { failureRedirect: '/login' }),
+		app.get('/auth/facebook/callback', auth.passport.authenticate('facebook', { failureRedirect: '/' }),
 			function(req, res) {
-				res.redirect('/');
+				res.redirect('/game');
 			}
 		);
 
@@ -40,9 +40,9 @@
 		//   request.  If authentication fails, the user will be redirected back to the
 		//   login page.  Otherwise, the primary route function function will be called,
 		//   which, in this example, will redirect the user to the home page.
-		app.get('/auth/twitter/callback', auth.passport.authenticate('twitter', { failureRedirect: '/login' }),
+		app.get('/auth/twitter/callback', auth.passport.authenticate('twitter', { failureRedirect: '/' }),
 			function(req, res) {
-				res.redirect('/');
+				res.redirect('/game');
 		});
 
 	} //end init

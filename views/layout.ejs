@@ -37,11 +37,12 @@
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/favicons/144.png" />
         
         <!-- CSS -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="assets/css/screen.css" media="screen" type="text/css"/>
         
               
-        <!--Google fonts
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro|Limelight' rel='stylesheet' type='text/css'>-->
+        <!--Google fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro|Limelight' rel='stylesheet' type='text/css'>
 
 	</head>
  	<!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
@@ -49,19 +50,21 @@
     <!--[if IE 9 ]>    <body class="ie9"> <![endif]-->
     <!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
 
-		<% if (!user) { %>
-			<p>
-				<a href="/">Home</a> | 
-				<a href="/login">Log In</a>
-			</p>
-		<% } else { %>
-			<p>
-				<a href="/">Home</a> | 
-				<a href="/account">Account</a> | 
-				<a href="/logout">Log Out</a>
-			</p>
-		<% } %>
-		<%- body %>
+        <div class="container">
+
+            <ul class="nav nav-pills">
+                <li><a class="active" href="/">Home</a></li>
+        		<% if (user) { %>
+                    <li><a href="/account" title="your account">Account</a></li>
+                    <li><a href="/logout" title="logout">Logout</a></li>
+        		<% } %>
+            </ul>
+            
+    		<%- body %>
+
+        </div>
+
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		
     </body>
 </html>
