@@ -6,7 +6,7 @@ var express = require('express'),
 
 // configure Express
 app.configure(function() {
-	app.set('views', __dirname + '/views');
+	app.set('views', __dirname + '/public/views');
 	app.set('view engine', 'ejs');
 	app.engine('ejs', require('ejs-locals'));
 	app.use(express.logger());
@@ -17,7 +17,7 @@ app.configure(function() {
 	app.use(auth.passport.initialize());
 	app.use(auth.passport.session());
 	app.use(app.router);
-	app.use(express.static(__dirname + '/'));
+	app.use(express.static(__dirname + '/public/'));
 });
 
 // when the router has finished loading the controllers

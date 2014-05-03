@@ -7,30 +7,32 @@ module.exports = function(grunt) {
   	grunt.loadNpmTasks('grunt-shell');
 
   	// define our sass and js locations
-  	var sasslocations = ['assets/sass/*.scss', 
-						'assets/sass/views/*.scss', 
-						'assets/sass/includes/*.scss'];
+  	var sasslocations = ['public/assets/sass/*.scss', 
+						'public/assets/sass/views/*.scss', 
+						'public/assets/sass/includes/*.scss',
+						'public/assets/sass/partials/*.scss'];
 
-  	var jsLocations= ['assets/js/script.js', 
-					'assets/js/vendor/*.js',
-					'assets/js/app/*.js',
-					'assets/js/app/**/*.js',
-					'assets/js/ui.js'];
+  	var jsLocations= ['public/assets/js/script.js',
+  					'public/assets/js/site-script.js',
+					'public/assets/js/vendor/*.js',
+					'public/assets/js/app/*.js',
+					'public/assets/js/app/**/*.js',
+					'public/assets/js/ui.js'];
 
   	// start the config for grunt
 	grunt.initConfig({
 
 		clean:{
-			dev: ['assets/css'],
-			build: ['assets/css']
+			dev: ['public/assets/css'],
+			build: ['public/assets/css']
 		},
 		compass: {
 		  	dev: {
 		    	options: {
-					cssDir: 'assets/css',
-					sassDir: 'assets/sass',
-					imagesDir: 'assets/img',
-					javascriptsDir: 'assets/js',
+					cssDir: 'public/assets/css',
+					sassDir: 'public/assets/sass',
+					imagesDir: 'public/assets/img',
+					javascriptsDir: 'public/assets/js',
 					outputStyle:'expanded',
 					assetCacheBuster: false
 			    }
@@ -38,10 +40,10 @@ module.exports = function(grunt) {
 			build:{
 
 				options: {
-					cssDir: 'assets/css',
-					sassDir: 'assets/sass',
-					imagesDir: 'assets/img',
-					javascriptsDir: 'assets/js',
+					cssDir: 'public/assets/css',
+					sassDir: 'public/assets/sass',
+					imagesDir: 'public/assets/img',
+					javascriptsDir: 'public/assets/js',
 					outputStyle:'compressed'
 			    }
 				
@@ -49,10 +51,12 @@ module.exports = function(grunt) {
 		},
 		shell:{
 			dev: {
-				command: 'juicer merge -s assets/js/script.js --force -m ""'
+				command: 'juicer merge -s public/assets/js/script.js --force -m ""',
+				command: 'juicer merge -s public/assets/js/site-script.js --force -m ""'
 			},
 			build: {
-				command: 'juicer merge -s assets/js/script.js --force'
+				command: 'juicer merge -s public/assets/js/script.js --force',
+				command: 'juicer merge -s public/assets/js/site-script.js --force'
 			}
 		},
 		watch: {

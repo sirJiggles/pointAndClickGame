@@ -5,7 +5,10 @@
 
 		// get request on index route
 		app.get('/', function(req, res){
-	  		res.render('index', { user: req.user });
+	  		res.render('index', { 
+	  			user: req.user,
+	  			login: true
+	  		});
 		});
 	}
 
