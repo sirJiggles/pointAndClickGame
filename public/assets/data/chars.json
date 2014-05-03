@@ -1,0 +1,13 @@
+{
+	"mozart" : {
+		"file" : "assets/img/mozart.png",
+		"frames" : 5,
+		"width" : 136,
+		"height" : 297,
+		"speed" : 120,
+		"outputWidth" : 45,
+		"outputHeight" : 99,
+		"once" : false,
+		"topSpeed" : 28
+	}
+}

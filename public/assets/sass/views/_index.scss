@@ -1,0 +1,73 @@
+/* Styles for the index page (login in and registering) */
+.index{
+
+	display:table;
+	height:100%;
+	width:100%;
+
+	.index-inner{
+		display:table-cell;
+	    vertical-align:middle;
+	}
+
+	h2{
+		margin:0px;
+		font-size:1.2em;
+	}
+
+	h3 {
+		@include block-left;
+		width:100%;
+		font-size: 1.4em;
+	}
+
+	ul{
+		list-style-type:none;
+		@include reset-box;
+		@include border-radius(5px);
+		@include block-left;
+		width:100%;
+
+		li{
+			width:100%;
+			@include reset-box;
+			@include block-left;
+
+			a{
+				@include block-left;
+				width:100%;
+				text-decoration:none;
+				font-size:1.1em;
+				color:$color-grey;
+				padding:10px;
+				background-color: #ddd;
+
+				&:hover{
+					background-color: $color-blue;
+					color:white;
+
+					span{
+						color:white;
+					}
+				}
+
+				&.facebook{
+					@include border-radius(5px 5px 0 0);
+				}
+
+				&.user{
+					@include border-radius(0 0 5px 5px);
+				}
+
+				span{
+					margin: 0 10px 0 0;
+					color:$color-grey;
+					font-size: 1.5em;
+					@include block-left;
+				}
+
+			}
+		}
+	}
+
+}

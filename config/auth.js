@@ -4,15 +4,11 @@
 	// vars needed to set up the auth
 	var passport = require('passport'),
 		apiKeys = require('./api-keys').keys,
+		User = require('../models/User'),
   		util = require('util'),
   		facebookStrategy = require('passport-facebook').Strategy,
   		twitterStrategy =  require('passport-twitter').Strategy,
   		localStrategy = require('passport-local').Strategy;
-
-	var users = [
-	    { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com' }
-	  , { id: 2, username: 'joe', password: 'birthday', email: 'joe@example.com' }
-	];
 
 
 	// Set up passport for logging in via facebook (will change later to use database)
@@ -21,9 +17,9 @@
 	});
  
 	passport.deserializeUser(function(obj, done) {
-		findById(id, function (err, user) {
-		    done(err, user);
-	  	});
+		User.findById(id, function(err, user) {
+            done(err, user);
+        });
 	});
 
 	// set up connecting via facebook
@@ -70,16 +66,36 @@
 			// asynchronous verification, for effect...
 			process.nextTick(function () {
 
-				// Find the user by username.  If there is no user with the given
-				// username, or the password is not correct, set the user to `false` to
-				// indicate failure and set a flash message.  Otherwise, return the
-				// authenticated `user`.
-				findByUsername(username, function(err, user) {
-					if (err) { return done(err); }
-					if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
-					if (user.password != password) { return done(null, false, { message: 'Invalid password' }); }
-					return done(null, user);
-				})
+				// find a user whose email is the same as the forms email
+				// we are checking to see if the user trying to login already exists
+		        User.findOne({ 'local.username' :  username }, function(err, user) {
+		            // if there are any errors, return the error
+		            if (err){
+		                return done(err);
+	                }
+
+		            // check to see if theres already a user with that email
+		            if (user) {
+		                return done(null, false, { message: 'Username: '+username+' already taken, please try again' });
+		            } else {
+
+						// if there is no user with that username then create it
+		                var newUser = new User();
+
+		                // set the user's local credentials
+		                newUser.local.username = username;
+		                newUser.local.password = newUser.generateHash(password);
+
+						// save the user
+		                newUser.save(function(err) {
+		                    if (err){
+		                        throw err;
+	                        }
+		                    return done(null, newUser);
+		                });
+		            }
+
+		        });    
 			});
 		}
 	));
@@ -91,26 +107,6 @@
 			return next(); 
 		}
 	  	res.redirect('/login');
-	}
-
-	// functions for finding users
-	function findById(id, fn) {
-		var idx = id - 1;
-		if (users[idx]) {
-			fn(null, users[idx]);
-		} else {
-			fn(new Error('User ' + id + ' does not exist'));
-		}
-	}
-
-	function findByUsername(username, fn) {
-		for (var i = 0, len = users.length; i < len; i++) {
-			var user = users[i];
-			if (user.username === username) {
-			  return fn(null, user);
-			}
-		}
-		return fn(null, null);
 	}
 
 	// export an interface for this module

@@ -1,8 +1,13 @@
 var express = require('express'),
 	auth = require('./config/auth'),
 	routes = require('./config/routes'),
+	apiKeys = require('./config/api-keys'),
+	mongoose = require('mongoose'),
 	app = express(),
 	controller = null;
+
+// connect to mongo db
+console.log(apiKeys.keys.dbUrl);
 
 // configure Express
 app.configure(function() {
@@ -13,7 +18,7 @@ app.configure(function() {
 	app.use(express.cookieParser());
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
-	app.use(express.session({ secret: 'keyboard cat' }));
+	app.use(express.session({ secret: apiKeys.keys.passportSecret }));
 	app.use(auth.passport.initialize());
 	app.use(auth.passport.session());
 	app.use(app.router);
