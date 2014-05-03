@@ -1,7 +1,7 @@
 {
   "name": "game-font-end",
   "version": "0.0.1",
-  "devDependencies": {
+  "dependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-nodeunit": "~0.2.0",
@@ -11,6 +11,10 @@
     "grunt-contrib-clean": "~0.5.0",
     "grunt-shell": "~0.3.1",
     "express": "3.5.0",
-    "socket.io": "~0.9.16"
+    "socket.io": "~0.9.16",
+    "passport": "~0.2.0",
+    "passport-facebook": "~1.0.3",
+    "walk": "~2.3.1",
+    "ejs": "~1.0.0"
   }
 }
