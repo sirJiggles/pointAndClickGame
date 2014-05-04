@@ -33,7 +33,7 @@ routes.walker.on("end", function(){
 	}
 
 	// now start the server
-	var server = app.listen(process.env.port, function(){
+	var server = app.listen(process.env.PORT, function(){
 		console.log('Server up and running on port %d', server.address().port);
 	});
 });
