@@ -1,13 +1,12 @@
 var express = require('express'),
 	auth = require('./config/auth'),
 	routes = require('./config/routes'),
-	apiKeys = require('./config/api-keys'),
 	mongoose = require('mongoose'),
 	app = express(),
 	controller = null;
 
 // connect to mongo db
-mongoose.connect(apiKeys.keys.dbUrl);
+mongoose.connect(process.env.dbUrl);
 
 // configure Express
 app.configure(function() {
@@ -18,7 +17,7 @@ app.configure(function() {
 	app.use(express.cookieParser());
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
-	app.use(express.session({ secret: apiKeys.keys.passportSecret }));
+	app.use(express.session({ secret: process.env.passportSecret }));
 	app.use(auth.passport.initialize());
 	app.use(auth.passport.session());
 	app.use(app.router);
@@ -34,7 +33,7 @@ routes.walker.on("end", function(){
 	}
 
 	// now start the server
-	var server = app.listen(3000, function(){
+	var server = app.listen(3001, function(){
 		console.log('Server up and running on port %d', server.address().port);
 	});
 });

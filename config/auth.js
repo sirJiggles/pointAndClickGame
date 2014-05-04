@@ -3,7 +3,6 @@
 
 	// vars needed to set up the auth
 	var passport = require('passport'),
-		apiKeys = require('./api-keys').keys,
 		User = require('../models/User'),
   		util = require('util'),
   		facebookStrategy = require('passport-facebook').Strategy,
@@ -24,9 +23,9 @@
 
 	// set up connecting via facebook
 	passport.use(new facebookStrategy({
-			clientID: apiKeys.facebook.appid,
-			clientSecret: apiKeys.facebook.secret,
-			callbackURL: "http://localhost:3001/auth/facebook/callback"
+			clientID: process.env.facebookAppid,
+			clientSecret: process.env.facebookSecret,
+			callbackURL: process.env.url + "/auth/facebook/callback"
 		},
 		function(accessToken, refreshToken, profile, done) {
 
@@ -67,9 +66,9 @@
 
 	// set up twitter authentification
 	passport.use(new twitterStrategy({
-		consumerKey: apiKeys.twitter.customerKey,
-		consumerSecret: apiKeys.twitter.customerSecret,
-		callbackURL: "http://localhost:3001/auth/twitter/callback"
+		consumerKey: process.env.twitterCustomerKey,
+		consumerSecret: process.env.twitterCustomerSecret,
+		callbackURL: process.env.url + "/auth/twitter/callback"
 		},
 	  	function(token, tokenSecret, profile, done) {
 			// asynchronous verification, for effect...
