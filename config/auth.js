@@ -25,7 +25,7 @@
 	passport.use(new facebookStrategy({
 			clientID: process.env.facebookAppid,
 			clientSecret: process.env.facebookSecret,
-			callbackURL: process.env.url + ':' + process.env.PORT + "/auth/facebook/callback"
+			callbackURL: process.env.url + "/auth/facebook/callback"
 		},
 		function(accessToken, refreshToken, profile, done) {
 
@@ -68,7 +68,7 @@
 	passport.use(new twitterStrategy({
 		consumerKey: process.env.twitterCustomerKey,
 		consumerSecret: process.env.twitterCustomerSecret,
-		callbackURL: process.env.url + ':' + process.env.PORT + "/auth/twitter/callback"
+		callbackURL: process.env.url + "/auth/twitter/callback"
 		},
 	  	function(token, tokenSecret, profile, done) {
 			// asynchronous verification, for effect...
