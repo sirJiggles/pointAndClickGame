@@ -16,7 +16,7 @@
 		done(null, user.id);
 	});
  
-	passport.deserializeUser(function(obj, done) {
+	passport.deserializeUser(function(id, done) {
 		User.findById(id, function(err, user) {
             done(err, user);
         });
@@ -29,15 +29,39 @@
 			callbackURL: "http://localhost:3001/auth/facebook/callback"
 		},
 		function(accessToken, refreshToken, profile, done) {
-			// asynchronous verification, for effect...
-			process.nextTick(function () {
-			  
-				// To keep the example simple, the user's Facebook profile is returned to
-				// represent the logged-in user.  In a typical application, you would want
-				// to associate the Facebook account with a user record in your database,
-				// and return that user instead.
-				return done(null, profile);
-			});
+
+			// find the user in the database based on their facebook id
+	        User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+
+	        	// if there is an error, stop everything and return that
+	        	// ie an error connecting to the database
+	            if (err){
+	                return done(err);
+                }
+
+				// if the user is found, then log them in
+	            if (user) {
+	                return done(null, user); // user found, return that user
+	            } else {
+	                // if there is no user found with that facebook id, create them
+	                var newUser = new User();
+
+					// set all of the facebook information in our user model
+	                newUser.facebook.id    = profile.id; 	                
+	                newUser.facebook.token = accessToken;	                
+	                newUser.facebook.username  = profile.name.givenName + ' ' + profile.name.familyName;
+
+					// save our user to the database
+	                newUser.save(function(err) {
+	                    if (err){
+	                        throw err;
+                        }
+	                    // if successful, return the new user
+	                    return done(null, newUser);
+	                });
+	            }
+
+	        });
 		}
 	));
 
@@ -50,18 +74,41 @@
 	  	function(token, tokenSecret, profile, done) {
 			// asynchronous verification, for effect...
 			process.nextTick(function () {
+				User.findOne({ 'twitter.id' : profile.id }, function(err, user) {
 
-				// To keep the example simple, the user's Twitter profile is returned to
-				// represent the logged-in user.  In a typical application, you would want
-				// to associate the Twitter account with a user record in your database,
-				// and return that user instead.
-				return done(null, profile);
+		            if (err){
+		                return done(err);
+	                }
+
+					// if the user is found then log them in
+		            if (user) {
+		                return done(null, user); // user found, return that user
+		            } else {
+		                // if there is no user, create them
+		                var newUser = new User();
+
+						// set all of the user data that we need
+		                newUser.twitter.id          = profile.id;
+		                newUser.twitter.token       = tokenSecret;
+		                newUser.twitter.username    = profile.username;
+		                newUser.twitter.displayName = profile.displayName;
+
+						// save our user into the database
+		                newUser.save(function(err) {
+		                    if (err){
+		                        throw err;
+	                        }
+		                    return done(null, newUser);
+		                });
+		            }
+		        });
+				
 			});
 	  	}
 	));
 
 	// set up local registering
-	passport.use(new localStrategy(
+	passport.use('local-signup', new localStrategy(
 		function(username, password, done) {
 			// asynchronous verification, for effect...
 			process.nextTick(function () {
@@ -91,7 +138,7 @@
 		                    if (err){
 		                        throw err;
 	                        }
-		                    return done(null, newUser);
+		                    return done(null, newUser, {message: 'Account created :D'});
 		                });
 		            }
 
@@ -100,13 +147,37 @@
 		}
 	));
 
+	// system for logging in locally
+	passport.use('local-login', new localStrategy(
+		function(username, password, done) {
+			process.nextTick(function () {
+		        User.findOne({ 'local.username' :  username }, function(err, user) {
+		            // if there are any errors, return the error before anything else
+		            if (err){
+		                return done(err);
+	                }
+
+		            // if no user is found, return the message
+		            if (!user){
+		                return done(null, false, { message: 'Username not found in the system' });
+	                }
+					// if the user is found but the password is wrong
+		            if (!user.validPassword(password)){
+		                return done(null, false, { message: 'Oops! Wrong password.'}); 
+	                }
+		            // all is well, return successful user
+		            return done(null, user);
+		        });
+	        });
+		}
+	));
 
 	// function to check if is authenticated
 	function ensureAuthenticated(req, res, next) {
 		if (req.isAuthenticated()) { 
 			return next(); 
 		}
-	  	res.redirect('/login');
+	  	res.redirect('/');
 	}
 
 	// export an interface for this module

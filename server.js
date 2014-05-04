@@ -7,7 +7,7 @@ var express = require('express'),
 	controller = null;
 
 // connect to mongo db
-console.log(apiKeys.keys.dbUrl);
+mongoose.connect(apiKeys.keys.dbUrl);
 
 // configure Express
 app.configure(function() {

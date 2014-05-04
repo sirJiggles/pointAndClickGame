@@ -8,7 +8,7 @@
 		});
 
 		app.post('/login', function(req, res, next) {
-			auth.passport.authenticate('local', function(err, user, info) {
+			auth.passport.authenticate('local-login', function(err, user, info) {
 				if (err) { return next(err) }
 				if (!user) {
 					req.session.messages =  [info.message];
@@ -16,6 +16,7 @@
 				}
 				req.logIn(user, function(err) {
 					if (err) { return next(err); }
+					req.session.messages = null;
 					return res.redirect('/');
 				});
 			})(req, res, next);

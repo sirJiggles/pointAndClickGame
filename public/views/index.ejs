@@ -1,36 +1,64 @@
 <% layout('layout') -%>
 
 <div class="index">
-	<div class="index-inner">
-		<div class="panel panel-primary">
-		    
-			<% if (!user) { %>
-				<div class="panel-heading">
-			    	<span class="icon-lock"></span> Please login to play.
-		    	</div>
+	<% if (message) { %>
+		<div class="flash-msg bg-info"><span class="icon-spam"></span><%= message %></div>
+	<% } %>
+	<% if (!user) { %>
+		<div class="panel panel-primary no-account">
+			
+			<div class="panel-heading">
+		    	<span class="icon-lock"></span> Please login to play.
+	    	</div>
 
-		    	<div class="panel-body">
-					<ul>
-					    <li><a href="/auth/facebook" title="Log in using Facebook" class="facebook"><span class="icon-facebook"></span> Login using facebook</a></li>
-					    <li><a href="/auth/twitter" title="Log in using Twitter" class="twitter"><span class="icon-twitter"></span> Login using Twitter</a></li>
-					    <li><a href="/login" title="Log in to an existing account" class="user"><span class="icon-user"></span>Login to existing account</a></li>
-					</ul>
+	    	<div class="panel-body">
+				<ul>
+				    <li><a href="/auth/facebook" title="Log in using Facebook" class="facebook"><span class="icon-facebook"></span> Login using facebook</a></li>
+				    <li><a href="/auth/twitter" title="Log in using Twitter" class="twitter"><span class="icon-twitter"></span> Login using Twitter</a></li>
+				    <li><a href="/login" title="Log in to an existing account" class="user"><span class="icon-user"></span>Login to existing account</a></li>
+				</ul>
 
-					<h3>Register for a new account</h3>
-					<p>There will be a form here</p>
-				</div>
-
-			<% } else { %>
-
-				<div class="panel-heading">
-			    	Hello, <%= user.displayName %>.
-		    	</div>
-			    <div class="panel-body">
-			    	<a href="/game" title="play the game">Play</a>
-		    	</div>
-
-			<% } %>
-
+				<div class="panel panel-default">
+				    <div class="panel-heading">
+						<h3 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#registerForm">
+							  Register for a new account
+							</a>
+						</h3>
+				    </div>
+				    <div id="registerForm" class="panel-collapse collapse out">
+					      <div class="panel-body">
+					        	<form action="/" method="post" role="form">
+									<div class="form-group">
+										<label for="username">Username:</label>
+										<input type="text" class="form-control" id="username" name="username" placeholder="Your Username" required="required" />
+									</div>
+									<div class="form-group">
+										<label for="password">Password:</label>
+										<input type="password" id="password" class="form-control" name="password" required="required"/>
+									</div>
+									<button type="submit" class="btn btn-default">Register</button>
+								</form>
+					      </div>
+				    </div>
+			 	</div>
+				
+			</div>
 		</div>
-	</div>
+
+	<% } else { %>
+		<div class="panel panel-primary no-account">
+
+			<div class="panel-heading">
+				<% var name = ( user.local.username ) ?  user.local.username : ( user.facebook.username) ?  user.facebook.username :  user.twitter.displayName; %>
+
+		    	Hey, <%= name %>!
+	    	</div>
+		    <div class="panel-body">
+		    	<a href="/game" title="play the game" class="btn btn-success">Play the game</a>
+	    	</div>
+    	</div>
+
+	<% } %>
+
 </div>
