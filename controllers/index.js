@@ -6,7 +6,6 @@
 		// get request on index route
 		app.get('/', function(req, res){
 			var navVar = (typeof req.user === 'undefined') ? true : undefined;
-			req.session.messages = (typeof req.user === 'undefined') ? '' : req.session.messages;
 	  		res.render('index', { 
 	  			user: req.user,
 	  			nav: navVar,
