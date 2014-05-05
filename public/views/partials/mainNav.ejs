@@ -1,0 +1,8 @@
+
+<ul class="nav nav-pills main-nav nav-justified">
+    <li class="home"><a href="/"><span class="icon-home"></span> Home</a></li>
+    <% if (user) { %>
+        <li class="account"><a href="/account" title="your account"><span class="icon-address-book"></span> Account</a></li>
+        <li class="logout"><a href="/logout" title="logout"><span class="icon-exit"></span> Logout</a></li>
+    <% } %>    
+</ul>

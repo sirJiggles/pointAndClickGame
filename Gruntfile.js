@@ -51,12 +51,12 @@ module.exports = function(grunt) {
 		},
 		shell:{
 			dev: {
-				command: 'juicer merge -s public/assets/js/script.js --force -m ""',
-				command: 'juicer merge -s public/assets/js/site-script.js --force -m ""'
+				command: ['juicer merge -s public/assets/js/script.js --force -m ""',
+						'juicer merge -s public/assets/js/site-script.js --force -m ""'].join('&&')
 			},
 			build: {
-				command: 'juicer merge -s public/assets/js/script.js --force',
-				command: 'juicer merge -s public/assets/js/site-script.js --force'
+				command: ['juicer merge -s public/assets/js/script.js --force',
+						'juicer merge -s public/assets/js/site-script.js --force'].join('&&')
 			}
 		},
 		watch: {

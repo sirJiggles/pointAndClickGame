@@ -35,6 +35,14 @@ $(window).ready(function(){
 		core.currentChar.newTarget = true;
 
 	});
+
+	// Pressing esc to bring up the main menu
+	$(document).keyup(function(evt) {
+  		if (evt.keyCode == 27) {
+  			// toggle the main menu popup
+  			$('#main-menu').modal('toggle');
+  		}
+	});
 	
 
 });

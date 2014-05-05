@@ -4,7 +4,6 @@
  * 
  * require all js files in order using juicer
  * 
- * @depends vendor/jquery-2.1.0.min.js
  * @depends vendor/a-star.js
  * @depends app/core.js
  * @depends app/math/vector-2d.js

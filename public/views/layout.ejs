@@ -47,21 +47,16 @@
         <div class="container">
             
             <% if (typeof nav === 'undefined'){ %>
-                <ul class="nav nav-pills main-nav">
-                    <li class="active"><a href="/"><span class="icon-home"></span> Home</a></li>
-                    <% if (user) { %>
-                        <li><a href="/account" title="your account"><span class="icon-address-book"></span> Account</a></li>
-                        <li><a href="/logout" title="logout"><span class="icon-exit"></span> Logout</a></li>
-                    <% } %>    
-                </ul>
+                <%- partial('partials/mainNav') %>
             <% } %>
-    		
+
+            <script src="assets/js/site-script.min.js"></script>
 
     		<%- body %>
 
         </div>
 
-        <script src="assets/js/site-script.min.js"></script>
+        
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		
     </body>

@@ -21,7 +21,7 @@
 		//   which, in this example, will redirect the user to the home page.
 		app.get('/auth/facebook/callback', auth.passport.authenticate('facebook', { failureRedirect: '/' }),
 			function(req, res) {
-				res.redirect('/');
+				res.redirect('/game');
 			}
 		);
 
@@ -42,7 +42,7 @@
 		//   which, in this example, will redirect the user to the home page.
 		app.get('/auth/twitter/callback', auth.passport.authenticate('twitter', { failureRedirect: '/' }),
 			function(req, res) {
-				res.redirect('/');
+				res.redirect('/game');
 		});
 
 	} //end init

@@ -24,7 +24,7 @@
 				req.logIn(user, function(err) {
 					if (err) { return next(err); }
 					req.session.messages = null;
-					return res.redirect('/');
+					return res.redirect('/game');
 				});
 			})(req, res, next);
 		});

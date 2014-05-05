@@ -1,5 +1,23 @@
 <% layout('layout') -%>
 
-<p>ID: <%= user.id %></p>
-<p>Username: <%= user.username %></p>
-<p>Name: <%= user.displayName %></p>
+<div class="panel panel-primary no-account">
+			
+	<div class="panel-heading">
+    	<span class="icon-address-book"></span> Your account
+	</div>
+
+	<div class="panel-body">
+
+		<!-- depending on the type of account, depends what we include -->
+		<% if(user.facebook.username) { %>
+			<%- partial('partials/accountDetails', [{name:user.facebook.username}]) %>
+		<% }else if(user.twitter.displayName) { %>
+			<%- partial('partials/accountDetails', [{name:user.twitter.displayName}]) %>
+		<% }else if(user.local.username) { %>
+			<%- partial('partials/accountDetails', [{name:user.local.username}]) %>
+		<% }else{ %>
+			<p>How did yo get here!</p>
+		<% } %>
+
+	</div>
+</div>
